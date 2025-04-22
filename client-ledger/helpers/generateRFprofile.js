@@ -21,9 +21,9 @@ async function generatePrfHash(bankId, month) {
 
     const { salt } = loadJson([bankDir, "salts", "prf.json"]);
     const prfSaltBig = BigInt(salt);
-    const prfValueBig = BigInt(Math.round(prf * 10000)); // Optional: scale to avoid float
+    // const prfValueBig = BigInt(Math.round(Number(prf) * 10000)); // Optional: scale to avoid float
 
-    const prfInput = [prfValueBig, prfSaltBig];
+    const prfInput = [prf, prfSaltBig];
     const prfHash = ethers.utils.hexZeroPad("0x" + F.toObject(poseidon(prfInput)).toString(16), 32);
 
     // === Save output ===

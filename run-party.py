@@ -3,6 +3,7 @@ import sys
 import os
 import subprocess
 import re
+import math
 from pathlib import Path
 
 # === CONFIGURATION ===
@@ -10,6 +11,7 @@ PROJECT_ROOT = Path(__file__).parent
 MPSPDZ_PROJECT_ROOT = PROJECT_ROOT / 'MP-SPDZ'
 BANK_DATA_ROOT = PROJECT_ROOT / 'client-ledger' / 'data'
 COMP_CIRCUIT_NAME = "comp"
+AML_CIRCUIT_NAME = "aml"
 HOSTS_FILE = "HOSTS"
 
 COMP_CIRCUIT_INFO_DIR = PROJECT_ROOT / 'circom-mp-spdz' / 'outputs' / 'comp' / 'circuit_info.json'
@@ -131,22 +133,60 @@ def run_mpc(circuit_name, party_id):
             capture_output=True,
             text=True
         )
+        stdout = result.stdout
         print(f"✅ MPC for party {party_id} finished successfully.")
-        print(result.stdout)
+        print(stdout)
+
+        # === PARSE OUTPUT ===
+        beta_match = re.search(r'outputs\[\d+\]: 0\.beta=([0-9.]+)', stdout)
+        sum_no_sd_match = re.search(r'outputs\[\d+\]: 0\.sum_no_sd=([0-9.]+)', stdout)
+
+        if beta_match and sum_no_sd_match:
+            beta = float(beta_match.group(1))
+            sum_no_sd = float(sum_no_sd_match.group(1))
+            std_dev = 7*math.sqrt(sum_no_sd)/3600
+            bw = (sum_no_sd + std_dev) / 8
+
+            print(f"📈 Parsed Outputs for P{party_id}:")
+            print(f"  • Beta:        {beta}")
+            print(f"  • Sum no SD:   {sum_no_sd}")
+            print(f"  • Std Dev:     {std_dev:.5f}")
+            print(f"  • BW:   {bw:.5f}")
+
+            # === SAVE OUTPUTS ===
+            output_dir = MPSPDZ_PROJECT_ROOT / "mpc-results"
+            output_dir.mkdir(exist_ok=True)
+            output_path = output_dir / f"party{party_id}_comp_result.json"
+
+            with open(output_path, "w") as f:
+                json.dump({
+                    "beta": beta,
+                    "sum_no_sd": sum_no_sd,
+                    "std_dev": std_dev,
+                    "bw": bw
+                }, f, indent=2)
+
+            print(f"✅ Saved results to {output_path}")
+            return bw
+
+        else:
+            print("⚠️ Could not find expected output values in stdout")
+            return None
 
     except subprocess.CalledProcessError as e:
-        print(f"MPC for party {party_id} failed!")
+        print(f"❌ MPC for party {party_id} failed!")
         print(f"Return Code: {e.returncode}")
         print(f"STDERR:\n{e.stderr}")
         print(f"STDOUT:\n{e.stdout}")
         sys.exit(1)
+
 
     
 
 def workflow(circuit_name, party_id):
     compile_circuit(circuit_name)
     write_input_file(party_id)
-    run_mpc(circuit_name, party_id)
+    return run_mpc(circuit_name, party_id)
 
 
 
@@ -158,10 +198,15 @@ def main():
 
     party_id = int(sys.argv[1])
 
-    workflow(
+    bw = workflow(
         circuit_name=COMP_CIRCUIT_NAME,
         party_id=party_id
     )
+
+    # prf_ml = workflow(
+    #     circuit_name=AML_CIRCUIT_NAME,
+    #     party_id=party_id
+    # )
 
 if __name__ == "__main__":
     main()

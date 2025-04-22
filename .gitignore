@@ -11,10 +11,13 @@ client-ledger/package-lock.json
 client-ledger/package.json
 client-ledger/foundry.toml
 
-# Client-ledger - circuits
-client-ledger/circuits/ptau/
-client-ledger/circuits/build/
-
 # Client-ledger - Git-related configs
 client-ledger/.gitmodules
 client-ledger/.github/workflows/
+
+# Circuits
+circuits/ptau/
+circuits/build/
+
+# MPC results
+MP-SPDZ/mpc-results/

@@ -18,14 +18,15 @@ node script/deploy.js
 
 ```python
 node helpers/generateSalt.js [partyid]
-node helpers/generateProfiles.js [partyid] [type: client, prf]
-node script/commit.js [partyid]
+node helpers/generateProfiles.js [partyid] 
+node helpers/generateRFprofile.js [partyid] 
+node script/commit.js [partyid] [type: client, prf]
 ```
 
 ### Update profiles
 
 ```python
-node helpers/generateProfiles.js [partyid] [type: client, prf]
+node helpers/generateProfiles.js [partyid]
 node script/update.js
 ```
 
@@ -68,7 +69,7 @@ snarkjs zkey export verificationkey circuits/build/input.zkey circuits/build/ver
 # -----------------------
 
 # Step 7: generate witness - continue
-node circuits/build/input_js/generate_witness.js circuits/build/input_js/input.wasm data/bankn/pdata/1488_202504.json circuits/build/witness.wtns
+node circuits/build/input_js/generate_witness.js circuits/build/input_js/input.wasm client-ledger/data/bank2/pdata/1488_202504.json circuits/build/witness.wtns
 
 # Step 8: generate proof
 snarkjs groth16 prove circuits/build/input.zkey circuits/build/witness.wtns circuits/build/proof.json circuits/build/public.json
