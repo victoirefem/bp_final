@@ -1,0 +1,34 @@
+[package]
+name = "circom-2-arithc"
+version = "0.1.0"
+edition = "2021"
+resolver = "1" # Fixes lalrpop issue, see: https://github.com/lalrpop/lalrpop/issues/616
+
+[dependencies]
+clap = { version = "4.5.4", features = ["derive"] }
+dotenv = "0.15.0"
+env_logger = "0.11.1"
+log = "0.4.20"
+rand = "0.8.5"
+regex = "1.10.3"
+serde_json = "1.0"
+serde = { version = "1.0.196", features = ["derive"] }
+thiserror = "1.0.59"
+strum_macros = "0.26.4"
+strum = "0.26.2"
+sim-circuit = { git = "https://github.com/brech1/sim-circuit" }
+bristol-circuit = { git = "https://github.com/voltrevo/bristol-circuit", rev = "2a8b001" }
+boolify = { git = "https://github.com/voltrevo/boolify", rev = "6376405" }
+
+# DSL
+circom-circom_algebra = { git = "https://github.com/iden3/circom", package = "circom_algebra", rev = "e8e125e" }
+circom-code_producers = { git = "https://github.com/iden3/circom", package = "code_producers", rev = "e8e125e" }
+circom-compiler = { git = "https://github.com/iden3/circom", package = "compiler", rev = "e8e125e" }
+circom-constant_tracking = { git = "https://github.com/iden3/circom", package = "constant_tracking", rev = "e8e125e" }
+circom-constraint_generation = { git = "https://github.com/iden3/circom", package = "constraint_generation", rev = "e8e125e" }
+circom-constraint_list = { git = "https://github.com/iden3/circom", package = "constraint_list", rev = "e8e125e" }
+circom-constraint_writers = { git = "https://github.com/iden3/circom", package = "constraint_writers", rev = "e8e125e" }
+circom-dag = { git = "https://github.com/iden3/circom", package = "dag", rev = "e8e125e" }
+circom-parser = { git = "https://github.com/iden3/circom", package = "parser", rev = "e8e125e" }
+circom-program_structure = { git = "https://github.com/iden3/circom", package = "program_structure", rev = "e8e125e" }
+circom-type_analysis = { git = "https://github.com/iden3/circom", package = "type_analysis", rev = "e8e125e" }

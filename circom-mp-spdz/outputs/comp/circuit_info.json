@@ -1,0 +1,114 @@
+{
+  "input_name_to_wire_index": {
+    "0.inlist[1][7]": 29,
+    "0.inlist[2][6]": 3,
+    "0.inlist[2][1]": 9,
+    "0.inlist[1][2]": 13,
+    "0.inlist[2][11]": 26,
+    "0.inlist[1][8]": 11,
+    "0.inlist[2][4]": 12,
+    "0.inlist[2][2]": 10,
+    "0.inlist[1][9]": 20,
+    "0.inlist[1][5]": 7,
+    "0.inlist[1][3]": 14,
+    "0.inlist[0][7]": 33,
+    "0.inlist[0][8]": 35,
+    "0.inlist[2][0]": 17,
+    "0.inlist[0][2]": 19,
+    "0.inlist[0][4]": 8,
+    "0.inlist[1][11]": 23,
+    "0.inlist[1][10]": 16,
+    "0.inlist[2][8]": 5,
+    "0.inlist[1][0]": 30,
+    "0.inlist[0][0]": 31,
+    "0.inlist[2][9]": 32,
+    "0.inlist[0][11]": 24,
+    "0.inlist[0][9]": 6,
+    "0.inlist[0][10]": 2,
+    "0.inlist[1][6]": 22,
+    "0.inlist[0][3]": 1,
+    "0.inlist[2][7]": 28,
+    "0.inlist[1][4]": 4,
+    "0.inlist[2][10]": 15,
+    "0.inlist[1][1]": 18,
+    "0.inlist[2][5]": 0,
+    "0.inlist[2][3]": 21,
+    "0.inlist[0][1]": 34,
+    "0.inlist[0][5]": 27,
+    "0.inlist[0][6]": 25
+  },
+  "constants": {
+    "AvgDiv.const_signal_1455_642": {
+      "value": "1455",
+      "wire_index": 100
+    },
+    "AvgDiv.const_signal_150_421": {
+      "value": "150",
+      "wire_index": 80
+    },
+    "Sum.const_signal_1_134": {
+      "value": "1",
+      "wire_index": 42
+    },
+    "0.const_signal_4_699": {
+      "value": "4",
+      "wire_index": 116
+    },
+    "Sum.const_signal_10_597": {
+      "value": "10",
+      "wire_index": 96
+    },
+    "AvgDiv.const_signal_3600_280": {
+      "value": "3600",
+      "wire_index": 63
+    },
+    "AvgDiv.const_signal_3_687": {
+      "value": "3",
+      "wire_index": 104
+    },
+    "Sum.const_signal_6_553": {
+      "value": "6",
+      "wire_index": 92
+    },
+    "0.const_signal_2_190": {
+      "value": "2",
+      "wire_index": 49
+    },
+    "Sum.const_signal_1_465": {
+      "value": "1",
+      "wire_index": 84
+    },
+    "Min2.const_signal_1_183": {
+      "value": "1",
+      "wire_index": 51
+    },
+    "Sd.const_signal_2_369": {
+      "value": "2",
+      "wire_index": 70
+    },
+    "AvgDiv.const_signal_9_90": {
+      "value": "9",
+      "wire_index": 38
+    },
+    "Sum.const_signal_1_178": {
+      "value": "1",
+      "wire_index": 46
+    },
+    "Sum.const_signal_1_509": {
+      "value": "1",
+      "wire_index": 88
+    },
+    "AvgDiv.const_signal_3000_235": {
+      "value": "3000",
+      "wire_index": 59
+    },
+    "AvgDiv.const_signal_3_362": {
+      "value": "3",
+      "wire_index": 67
+    }
+  },
+  "output_name_to_wire_index": {
+    "0.beta": 118,
+    "0.sum_no_sd": 117
+  }
+}

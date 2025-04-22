@@ -1,0 +1,20 @@
+.vscode/
+
+# client-ledger - dependencies and builds
+/client-ledger/data/
+client-ledger/node-modules/
+client-ledger/artifacts/
+client-ledger/lib/
+
+# client-ledger - project files
+client-ledger/package-lock.json
+client-ledger/package.json
+client-ledger/foundry.toml
+
+# Client-ledger - circuits
+client-ledger/circuits/ptau/
+client-ledger/circuits/build/
+
+# Client-ledger - Git-related configs
+client-ledger/.gitmodules
+client-ledger/.github/workflows/
