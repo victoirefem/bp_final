@@ -2,7 +2,11 @@
 
 Instructions at: [Anvil](https://medium.com/@maria.magdalena.makeup/foundry-anvil-a-local-ethereum-node-for-development-642ca28f7892)
 
-## Scripts
+## Scripts (Client Ledger)
+
+```python
+cd client-ledger
+```
 
 ### Deploy contract:
 
@@ -13,22 +17,22 @@ node script/deploy.js
 ### Commit profiles
 
 ```python
-node helpers/generateSalt.js
-node helpers/generateProfiles.js
-node script/commit.js
+node helpers/generateSalt.js [partyid]
+node helpers/generateProfiles.js [partyid] [type: client, prf]
+node script/commit.js [partyid]
 ```
 
 ### Update profiles
 
 ```python
-node helpers/generateProfiles.js
+node helpers/generateProfiles.js [partyid] [type: client, prf]
 node script/update.js
 ```
 
 ### Authorize Bank
 
 ```python
-node script/authorizeBank.js
+node script/authorizeBank.js [partyid]
 ```
 
 ### Inspect Ledger
@@ -40,7 +44,7 @@ node script/inspectLedger.js
 ### Generate proof
 
 ```python
-node helpers/generateCircuitInputs.js
+node helpers/generateCircuitInputs.js [partyid]
 run circom commands (r1cs, zkey, verification_key)...
  then generate witness
 ```
@@ -72,3 +76,7 @@ snarkjs groth16 prove circuits/build/input.zkey circuits/build/witness.wtns circ
 # Step 9: verify proof
 snarkjs groth16 verify circuits/build/verification_key.json circuits/build/public.json circuits/build/proof.json
 ```
+
+## MP-SPDZ
+
+Instructions at: [circom-mp-spdz](https://hackmd.io/Iuu9yge4ShKBjawAcmFjvw?view) (2: Run parties in different machines)
