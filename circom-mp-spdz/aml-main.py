@@ -569,9 +569,9 @@ def main():
     pml_pub = int(PML * 1000)
 
 
-    # final_aml = workflow(circuit_name='aml', dir_name = 'aml', mpc_settings_change=True, public_inputs={"0.bw": bw_pub, "0.pml": pml_pub})
-    # pml_rf = final_aml["fin"]
-    # print("P(ML_RF)", pml_rf/1000)
+    final_aml = workflow(circuit_name='aml', dir_name = 'aml', mpc_settings_change=True, public_inputs={"0.bw": bw_pub, "0.pml": pml_pub})
+    pml_rf = final_aml["fin"]
+    print("P(ML_RF)", pml_rf/1000)
 
     # os.system(f"python3 circom-mp-spdz/aml-verify.py {bw} {PML}")
 

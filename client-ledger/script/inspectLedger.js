@@ -16,7 +16,7 @@ async function main() {
     const regulator = provider.getSigner(REGULATOR_SIGNER_INDEX);
     const regulatorAddress = await regulator.getAddress();
 
-    console.log(`🔍 Using AML Regulator (${regulatorAddress}) to inspect banks...\n`);
+    console.log(`Using AML Regulator (${regulatorAddress}) to inspect banks...\n`);
 
     const connectedAsRegulator = contract.connect(regulator);
 
@@ -25,7 +25,7 @@ async function main() {
         const bankAddr = await bankSigner.getAddress();
 
         const isAuthorized = await contract.isBank(bankAddr);
-        console.log(`🏦 Bank ${i} (${bankAddr})`);
+        console.log(`Bank ${i} (${bankAddr})`);
         console.log(`• Authorized: ${isAuthorized}`);
 
         if (!isAuthorized) {
@@ -39,7 +39,7 @@ async function main() {
             console.log(`• Static Commitment: ${staticHash}`);
             console.log(`• Static Metadata  : ${staticMeta}`);
         } catch (err) {
-            console.log("• Static Commitment: ❌ Not set");
+            console.log("• Static Commitment: Not set");
         }
 
         try {
@@ -47,7 +47,7 @@ async function main() {
             console.log(`• TX Commitment    : ${txHash}`);
             console.log(`• TX Metadata      : ${txMeta}`);
         } catch (err) {
-            console.log("• TX Commitment    : ❌ Not set");
+            console.log("• TX Commitment    : Not set");
         }
 
         try {
@@ -55,13 +55,13 @@ async function main() {
             console.log(`• RF Commitment    : ${rfHash}`);
             console.log(`• RF Metadata      : ${rfMeta}`);
         } catch (err) {
-            console.log("• RF Commitment    : ❌ Not set");
+            console.log("• RF Commitment    : Not set");
         }
 
         console.log("-------------------------------------------------");
     }
 
-    console.log("✅ Inspection complete.");
+    console.log("Inspection complete.");
 }
 
 main().catch(console.error);

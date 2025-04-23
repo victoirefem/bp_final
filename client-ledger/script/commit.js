@@ -19,7 +19,7 @@ async function main() {
     const mode = process.argv[3] || "client";  // default: client
 
     if (isNaN(bankId)) {
-        console.error("❌ Please provide a valid bank ID");
+        console.error("provide a valid bank ID");
         return;
     }
 
@@ -34,39 +34,39 @@ async function main() {
     if (mode === "client") {
         const profilePath = path.join(profilesDir, `${ssnClient}_${month}.json`);
         if (!fs.existsSync(profilePath)) {
-            console.error(`❌ Client profile not found: ${profilePath}`);
+            console.error(`Client profile not found: ${profilePath}`);
             return;
         }
 
         const { staticHash, txHash } = loadJSON(profilePath);
 
-        console.log(`🔐 [Client] Committing static and tx hashes for bank ${bankId} (${signerAddress})`);
+        console.log(`[Client] Committing static and tx hashes for bank ${bankId} (${signerAddress})`);
 
         const tx1 = await contract.commitStatic(staticHash, month, "Static commitment");
         await tx1.wait();
-        console.log("✅ Static profile committed ✔️");
+        console.log("Static profile committed");
 
         const tx2 = await contract.commitTx(txHash, month, "TX commitment");
         await tx2.wait();
-        console.log("✅ TX profile committed ✔️");
+        console.log("TX profile committed");
 
     } else if (mode === "prf") {
         const profilePath = path.join(profilesDir, `${ssnPRF}_${month}.json`);
         if (!fs.existsSync(profilePath)) {
-            console.error(`❌ PRF profile not found: ${profilePath}`);
+            console.error(`PRF profile not found: ${profilePath}`);
             return;
         }
 
         const { prfHash } = loadJSON(profilePath);
 
-        console.log(`🔐 [PRF] Committing p(rf) hash for bank ${bankId} (${signerAddress})`);
+        console.log(`[PRF] Committing p(rf) hash for bank ${bankId} (${signerAddress})`);
 
         const rf = await contract.commitRF(prfHash, month, "PRF commitment");
         await rf.wait();
-        console.log("✅ PRF commitment submitted ✔️");
+        console.log("PRF commitment submitted ✔️");
 
     } else {
-        console.error("❌ Invalid mode. Use 'client' or 'prf'.");
+        console.error("Invalid mode. Use 'client' or 'prf'.");
         return;
     }
 }

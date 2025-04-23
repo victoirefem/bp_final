@@ -29,8 +29,8 @@ async function main() {
     const contract = await factory.deploy(regulatorAddress);
     await contract.deployed();
 
-    console.log("✅ Contract deployed at:", contract.address);
-    console.log("🔐 AML Regulator Address:", regulatorAddress);
+    console.log("-Contract deployed at:", contract.address);
+    console.log("-AML Regulator Address:", regulatorAddress);
 
     // Save ABI and address
     const outputDir = "artifacts/contracts";
@@ -41,10 +41,10 @@ async function main() {
         bytecode: bytecode
     }, null, 2));
 
-    console.log(`📦 ABI + address saved to ${outputDir}/ClientLedger.json`);
+    console.log(`ABI + address: ${outputDir}/ClientLedger.json`);
 }
 
 main().catch((err) => {
-    console.error("❌ Deployment failed:", err);
+    console.error("Deployment failed:", err);
     process.exit(1);
 });

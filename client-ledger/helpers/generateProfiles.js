@@ -3,17 +3,18 @@ const path = require("path");
 const { ethers } = require("ethers");
 const circomlibjs = require("circomlibjs");
 
-// === CONFIG (default values) ===
-const ssn = "1488";
-const month = 202504; // Format YYYYMM
+// === CONFIG ===
+const ssnClient = "1488";
+const ssnPRF = "prf";
+const month = 202504;
 
 // === HELPERS ===
 function loadJson(relativePath) {
     return JSON.parse(fs.readFileSync(path.join(...relativePath), "utf8"));
 }
 
-// === MAIN ===
-async function generateHashes(bankId, ssn, month) {
+// === CLIENT PROFILE ===
+async function generateClientHashes(bankId, ssn, month) {
     const poseidon = await circomlibjs.buildPoseidon();
     const F = poseidon.F;
 
@@ -50,14 +51,10 @@ async function generateHashes(bankId, ssn, month) {
         saltBig
     ];
 
-    // ✅ Poseidon hashing
-    const staticHashBigInt = F.toObject(poseidon(staticInputs));
-    const txHashBigInt = F.toObject(poseidon(txInputs));
+    const staticHash = ethers.utils.hexZeroPad("0x" + F.toObject(poseidon(staticInputs)).toString(16), 32);
+    const txHash = ethers.utils.hexZeroPad("0x" + F.toObject(poseidon(txInputs)).toString(16), 32);
 
-    const staticHash = ethers.utils.hexZeroPad("0x" + staticHashBigInt.toString(16), 32);
-    const txHash = ethers.utils.hexZeroPad("0x" + txHashBigInt.toString(16), 32);
-
-    console.log("🔐 Generated Poseidon Hashes:");
+    console.log("Generated Poseidon Hashes:");
     console.log("• Static Profile Hash:", staticHash);
     console.log("• TX Profile Hash:    ", txHash);
 
@@ -73,13 +70,52 @@ async function generateHashes(bankId, ssn, month) {
         generatedAt: new Date().toISOString()
     }, null, 2));
 
-    console.log(`📦 Saved to ${outputPath}`);
+    console.log(`Saved to ${outputPath}`);
 }
 
-// === RUN ===
+// === PRF PROFILE ===
+async function generatePRFHash(bankId, month) {
+    const poseidon = await circomlibjs.buildPoseidon();
+    const F = poseidon.F;
+
+    const bankDir = path.join("data", `bank${bankId}`);
+    const prfData = loadJson([bankDir, 'prf', `prf_${month}.json`]);
+    const { prf } = prfData;
+
+    const { salt } = loadJson([bankDir, "salts", "prf.json"]);
+    const prfSaltBig = BigInt(salt);
+
+    const prfInput = [prf, prfSaltBig];
+    const prfHash = ethers.utils.hexZeroPad("0x" + F.toObject(poseidon(prfInput)).toString(16), 32);
+
+    const outputDir = path.join(bankDir, "profiles");
+    fs.mkdirSync(outputDir, { recursive: true });
+
+    const outputPath = path.join(outputDir, `prf_${month}.json`);
+    fs.writeFileSync(outputPath, JSON.stringify({
+        prfHash,
+        month,
+        generatedAt: new Date().toISOString()
+    }, null, 2));
+
+    console.log("Poseidon PRF Hash:", prfHash);
+    console.log(`Saved to ${outputPath}`);
+}
+
+// === EXECUTE ===
 const bankIdArg = process.argv[2];
-if (!bankIdArg) {
-    console.error("❌ Please provide the bank ID");
+const profileType = process.argv[3] || "client"; // default: client
+
+if (!bankIdArg || isNaN(bankIdArg)) {
+    console.error("provide a valid bank ID");
     process.exit(1);
 }
-generateHashes(Number(bankIdArg), ssn, month);
+
+if (profileType === "client") {
+    generateClientHashes(Number(bankIdArg), ssnClient, month);
+} else if (profileType === "prf") {
+    generatePRFHash(Number(bankIdArg), month);
+} else {
+    console.error("Invalid profile type. Use 'client' or 'prf'");
+    process.exit(1);
+}

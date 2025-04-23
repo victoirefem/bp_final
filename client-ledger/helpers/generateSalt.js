@@ -22,7 +22,7 @@ function saveSalt(bankId, ssn, salt) {
 
     const payload = { salt };
     fs.writeFileSync(file, JSON.stringify(payload, null, 2));
-    console.log(`✅ Salt saved to ${file}`);
+    console.log(`Salt saved to ${file}`);
 }
 
 // === MAIN ===
@@ -30,7 +30,7 @@ function main() {
     const bankId = process.argv[2];
 
     if (!bankId) {
-        console.error("❌ Please provide a bank ID as an argument");
+        console.error("Please provide a bank ID as an argument");
         process.exit(1);
     }
 

@@ -9,7 +9,7 @@ const ssn = "1488";
 const month = 202504;
 
 if (isNaN(bankId)) {
-    console.error("❌ Please provide a valid bank ID");
+    console.error("provide a valid bank ID");
     process.exit(1);
 }
 
@@ -26,7 +26,7 @@ const outputPath = `${base}/pdata/${ssn}_${month}.json`;
 
 // === LOAD FILES ===
 if (![staticPath, txPath, clientSaltPath, rfPath, rfSaltPath].every(fs.existsSync)) {
-    console.error("❌ Missing one or more input files");
+    console.error("Missing one or more input files");
     process.exit(1);
 }
 
@@ -109,12 +109,12 @@ const { salt: prfSalt } = JSON.parse(fs.readFileSync(rfSaltPath, "utf8"));
     const prfCommitmentHex = ethers.utils.hexZeroPad("0x" + F.toObject(poseidon(rfInputs)).toString(16), 32);
 
 
-    console.log("🔎 Static commitment: ", staticCommitmentHex);
-    console.log("🔎 Tx commitment:     ", txCommitmentHex);
-    console.log("🔎 Prf commitment:    ", prfCommitmentHex);    
+    console.log("Static commitment: ", staticCommitmentHex);
+    console.log("Tx commitment:     ", txCommitmentHex);
+    console.log("Prf commitment:    ", prfCommitmentHex);    
 
 
     fs.mkdirSync(path.dirname(outputPath), { recursive: true });
     fs.writeFileSync(outputPath, JSON.stringify(circuitInput, null, 2));
-    console.log(`✅ Circuit input (with PRF) saved to ${outputPath}`);
+    console.log(`Circuit input (with PRF) saved to ${outputPath}`);
 })();

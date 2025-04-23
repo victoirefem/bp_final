@@ -2,9 +2,9 @@
 5 1 1 1 1 1
 1 1
 
-2 1 0 1 5 AAdd
-2 1 5 2 6 AAdd
+2 1 1 0 5 AAdd
+2 1 5 4 6 AAdd
 2 1 6 7 8 ADiv
-2 1 9 3 10 ASub
-2 1 10 4 11 AMul
+2 1 9 2 10 ASub
+2 1 10 3 11 AMul
 2 1 11 8 12 ADiv

@@ -19,7 +19,7 @@ async function main() {
     const mode = process.argv[3] || "client"; // default: client
 
     if (isNaN(bankId)) {
-        console.error("❌ Please provide a valid bank ID");
+        console.error("Please provide a valid bank ID");
         return;
     }
 
@@ -34,49 +34,49 @@ async function main() {
     if (mode === "client") {
         const profilePath = path.join(profilesDir, `${ssnClient}_${month}.json`);
         if (!fs.existsSync(profilePath)) {
-            console.error(`❌ Client profile not found: ${profilePath}`);
+            console.error(`Client profile not found: ${profilePath}`);
             return;
         }
 
         const { staticHash, txHash } = loadJSON(profilePath);
-        console.log(`🛠️  [Client] Updating static and tx commitments for Bank ${bankId} (${signerAddress})`);
+        console.log(`[Client] Updating static and tx commitments for Bank ${bankId} (${signerAddress})`);
 
         try {
             const tx1 = await contract.updateStatic(staticHash, month, "Updated static commitment");
             await tx1.wait();
-            console.log("✅ Static commitment updated");
+            console.log("Static commitment updated");
         } catch (err) {
-            console.error("❌ Failed to update static commitment:", err.message);
+            console.error("Failed to update static commitment:", err.message);
         }
 
         try {
             const tx2 = await contract.updateTx(txHash, month, "Updated tx commitment");
             await tx2.wait();
-            console.log("✅ TX commitment updated");
+            console.log("TX commitment updated");
         } catch (err) {
-            console.error("❌ Failed to update tx commitment:", err.message);
+            console.error("Failed to update tx commitment:", err.message);
         }
 
     } else if (mode === "prf") {
         const profilePath = path.join(profilesDir, `${ssnPRF}_${month}.json`);
         if (!fs.existsSync(profilePath)) {
-            console.error(`❌ PRF profile not found: ${profilePath}`);
+            console.error(`PRF profile not found: ${profilePath}`);
             return;
         }
 
         const { prfHash } = loadJSON(profilePath);
-        console.log(`🛠️  [PRF] Updating p(rf) commitment for Bank ${bankId} (${signerAddress})`);
+        console.log(`[PRF] Updating p(rf) commitment for Bank ${bankId} (${signerAddress})`);
 
         try {
             const tx = await contract.updateRF(prfHash, month, "Updated PRF commitment");
             await tx.wait();
-            console.log("✅ PRF commitment updated");
+            console.log("PRF commitment updated");
         } catch (err) {
-            console.error("❌ Failed to update PRF commitment:", err.message);
+            console.error("Failed to update PRF commitment:", err.message);
         }
 
     } else {
-        console.error("❌ Invalid mode. Use 'client' or 'prf'.");
+        console.error("Invalid mode. Use 'client' or 'prf'.");
     }
 }
 

@@ -18,15 +18,14 @@ node script/deploy.js
 
 ```python
 node helpers/generateSalt.js [partyid]
-node helpers/generateProfiles.js [partyid] 
-node helpers/generateRFprofile.js [partyid] 
+node helpers/generateProfiles.js [partyid] [type: client, prf]
 node script/commit.js [partyid] [type: client, prf]
 ```
 
 ### Update profiles
 
 ```python
-node helpers/generateProfiles.js [partyid]
+node helpers/generateProfiles.js [partyid] [type: client, prf]
 node script/update.js
 ```
 
