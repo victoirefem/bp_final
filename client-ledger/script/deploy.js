@@ -5,7 +5,6 @@ const solc = require("solc");
 async function main() {
     const provider = new ethers.providers.JsonRpcProvider("http://localhost:8545");
     const signer = provider.getSigner(0);
-    const regulatorAddress = await signer.getAddress();
 
     // Read and compile contract
     const source = fs.readFileSync("src/ClientLedger.sol", "utf8");
@@ -24,13 +23,12 @@ async function main() {
     const bytecode = contractData.evm.bytecode.object;
     const abi = contractData.abi;
 
-    // Deploy contract with regulator address
+    // Deploy contract
     const factory = new ethers.ContractFactory(abi, bytecode, signer);
-    const contract = await factory.deploy(regulatorAddress);
+    const contract = await factory.deploy();  // <--- no argument!
     await contract.deployed();
 
-    console.log("-Contract deployed at:", contract.address);
-    console.log("-AML Regulator Address:", regulatorAddress);
+    console.log("- Contract deployed at:", contract.address);
 
     // Save ABI and address
     const outputDir = "artifacts/contracts";
@@ -41,7 +39,7 @@ async function main() {
         bytecode: bytecode
     }, null, 2));
 
-    console.log(`ABI + address: ${outputDir}/ClientLedger.json`);
+    console.log(`ABI + address saved to: ${outputDir}/ClientLedger.json`);
 }
 
 main().catch((err) => {

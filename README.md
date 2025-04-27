@@ -29,11 +29,6 @@ node helpers/generateProfiles.js [partyid] [type: client, prf]
 node script/update.js
 ```
 
-### Authorize Bank
-
-```python
-node script/authorizeBank.js [partyid]
-```
 
 ### Inspect Ledger
 
