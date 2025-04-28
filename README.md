@@ -44,6 +44,39 @@ run circom commands (r1cs, zkey, verification_key)...
  then generate witness
 ```
 
+## MPC Scripts
+
+### Deploy MPC contract:
+
+```python
+node script/deployMpc.js
+```
+
+### Interact 
+```python
+export BANK_INDEX=
+
+node client-ledger/script/interactMpc.js createSession
+
+node client-ledger/script/interactMpc.js joinSession --session [session_id]
+
+node client-ledger/script/interactMpc.js startSession --session [session_id]
+
+node client-ledger/script/interactMpc.js finishSession --session [session_id]
+```
+
+### Inspect MPC
+
+```python
+node script/inspectMpc.js --session [session_id]
+```
+
+### Set listener
+
+```python
+python3 event_listener.py
+```
+
 ## Circom
 ```python
 # Step 1: write circuits
