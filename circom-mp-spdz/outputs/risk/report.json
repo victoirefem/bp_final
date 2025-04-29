@@ -1,0 +1,69 @@
+{
+  "inputs": [
+    {
+      "id": 27,
+      "names": [
+        "WeightSum.w[0]",
+        "0.w[0]"
+      ],
+      "value": null
+    },
+    {
+      "id": 28,
+      "names": [
+        "WeightSum.w[1]",
+        "0.w[1]"
+      ],
+      "value": null
+    },
+    {
+      "id": 29,
+      "names": [
+        "WeightSum.w[2]",
+        "0.w[2]"
+      ],
+      "value": null
+    },
+    {
+      "id": 30,
+      "names": [
+        "WeightSum.ri[0]",
+        "0.ri[0]"
+      ],
+      "value": null
+    },
+    {
+      "id": 31,
+      "names": [
+        "WeightSum.ri[1]",
+        "0.ri[1]"
+      ],
+      "value": null
+    },
+    {
+      "id": 32,
+      "names": [
+        "WeightSum.ri[2]",
+        "0.ri[2]"
+      ],
+      "value": null
+    },
+    {
+      "id": 33,
+      "names": [
+        "0.const_signal_5"
+      ],
+      "value": 5
+    }
+  ],
+  "outputs": [
+    {
+      "id": 35,
+      "names": [
+        "0.r_new"
+      ],
+      "value": null
+    }
+  ],
+  "value_type": "sint"
+}

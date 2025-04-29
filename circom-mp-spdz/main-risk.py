@@ -275,56 +275,6 @@ def generate_mpspdz_inputs_for_party(
             wire_value = input_values_for_party_json[wire_name]
             wire_value_in_order_for_mpsdz.append(wire_value)
 
-    ############## DEPRECATED 1
-    # for wire_name, wire_index in wire_to_name_sorted:
-    #     # If it's a public input, include it for all parties
-    #     if wire_name in public_inputs:
-    #         if wire_name not in input_values_for_party_json:
-    #             raise ValueError(f"Missing public input '{wire_name}' in party {party}'s input file.")
-    #         wire_value = input_values_for_party_json[wire_name]
-    #         wire_value_in_order_for_mpsdz.append(wire_value)
-    #         continue
-
-    #     # Otherwise, it's a private input: only add if it's from this party
-    #     wire_from_party = int(inputs_from[wire_name])
-    #     if wire_from_party == party:
-    #         wire_value = input_values_for_party_json[wire_name]
-    #         wire_value_in_order_for_mpsdz.append(wire_value)
-
-
-    ########## DEPRECATED 2
-    # for wire_name, wire_index in wire_to_name_sorted:
-    #     # If it's a public input, include it for all parties
-    #     if wire_name in public_inputs:
-    #         if wire_name not in input_values_for_party_json:
-    #             raise ValueError(f"Missing public input '{wire_name}' in party {party}'s input file.")
-    #         wire_value = input_values_for_party_json[wire_name]
-    #         wire_value_in_order_for_mpsdz.append(wire_value)
-    #         continue
-
-    #     # Private input logic — only include if it's owned by this party
-    #     if wire_name not in inputs_from:
-    #         continue  # skip wires that aren't in the private input map
-
-    #     wire_from_party = inputs_from[wire_name]
-    #     if wire_from_party == party:
-    #         if wire_name not in input_values_for_party_json:
-    #             raise ValueError(f"Missing private input '{wire_name}' for party {party}")
-    #         wire_value = input_values_for_party_json[wire_name]
-    #         wire_value_in_order_for_mpsdz.append(wire_value)
-
-
-    # #### DEPRECATED FOR PUBLIC INPUTS
-    # for wire_name, wire_index in wire_to_name_sorted:
-    #     if wire_name in public_inputs:
-    #         wire_value = input_values_for_party_json.get(wire_name, 0)
-    #     elif inputs_from.get(wire_name) == party:
-    #         wire_value = input_values_for_party_json.get(wire_name, 0)
-    #     elif pad_missing:
-    #         wire_value = 0
-    #     else:
-    #         continue
-    #     wire_value_in_order_for_mpsdz.append(wire_value)
 
     print(f"[P{party}] Inputs: ", list(zip([w for w, _ in wire_to_name_sorted], wire_value_in_order_for_mpsdz)))
 
@@ -431,22 +381,7 @@ def workflow(circuit_name: str, dir_name: str, mpc_settings_change: bool = False
     code = os.system(f"cd {CIRCOM_2_ARITHC_PROJECT_ROOT} && ./target/release/circom-2-arithc --input {circom_path} --output {output_dir}")
     if code != 0:
         raise ValueError(f"Failed to compile circom. Error code: {code}")
-    
-    
-    # ---- BY ME: raw circuit - not needed? 
-    # code = os.system(f"cd {circuit_dir} && cp ./raw_circuit.mpc {MPSPDZ_CIRCUIT_DIR}")
-    # if code != 0:
-    #     raise ValueError(f"Failed to copy raw_circuit.mpc. Error code: {code}")
 
-    
-    # Step 2: run arithc-to-bristol
-    # python arithc_to_bristol.py {arithc_path} {output_dir}
-    arithc_path = output_dir / "circuit.json"
-    ### NOW NOT NEEDED
-    # code = os.system(f"python {ARITHC_TO_BRISTOL_SCRIPT} {arithc_path} {output_dir}")
-    # if code != 0:
-    #     raise ValueError(f"Failed to run arithc-to-bristol. Error code: {code}")
-    ### NOW NOT NEEDED
 
     bristol_path = output_dir / "circuit.txt"
     # bristol_path = output_dir / f"{circuit_name}.txt"
@@ -466,15 +401,6 @@ def workflow(circuit_name: str, dir_name: str, mpc_settings_change: bool = False
     if code != 0:
         raise ValueError(f"Failed to generate circuit.mpc. Error code: {code}")
     
-    # DEPRECATED: Step 4: generate MP-SPDZ inputs for each party
-    # for i, input_json_for_party_path in enumerate(input_json_path_for_each_party):
-    #     input_file_for_party_mpspdz = generate_mpspdz_inputs_for_party(
-    #         i,
-    #         input_json_for_party_path,
-    #         circuit_info_path,
-    #         mpc_settings_path,
-    #     )
-        #print(f"Generated MP-SPDZ inputs for party {i} at {input_file_for_party_mpspdz}")
 
     # === Patch circuit_info.json if public inputs missing ===
     with open(circuit_info_path, 'r+') as f:
@@ -483,8 +409,6 @@ def workflow(circuit_name: str, dir_name: str, mpc_settings_change: bool = False
         info["input_name_to_wire_index"] = dict(
             sorted(info["input_name_to_wire_index"].items(), key=lambda x: x[1])
         )
-
-
 
     # Step 4: generate MP-SPDZ inputs for each party
     for i, input_json_for_party_path in enumerate(input_json_path_for_each_party):
@@ -527,53 +451,100 @@ def workflow(circuit_name: str, dir_name: str, mpc_settings_change: bool = False
 
     return outputs
 
-    # ---BY ME: some raw circuit - not needed???
-
-    # rawpath = Path(str(mpspdz_circuit_path).replace("circuit", "raw_circuit"));
-    # print(f"\n\n\nBENCH RAW MP-SPDZ circuit at {rawpath}")
-
-    # st = time.time()
-    # raw_outputs = run_mpspdz_circuit(rawpath, num_parties)
-    # print(f"\n\n\n========= Raw Computation has finished =========\n\n")
-    # print(f"Outputs: {raw_outputs}")
-    # et = time.time()
-    # elapsed_time = et - st
-    # print('\n\n\nRAW Execution time:', elapsed_time, 'seconds')
-
 
 def main():
 
-
     #  === ORIGINAL WORKFLOW ===
-    comp = workflow(circuit_name='comp', dir_name = 'aml', mpc_settings_change=True)
+    # risk = workflow(circuit_name='comp', dir_name = 'aml', mpc_settings_change=True)
 
-    # os.system("python3 circom-mp-spdz/comp-verify.py")
+    circuit_name = 'risk'
+    mpc_settings_name = 'mpc_settings_risk.json'
+    py_name = 'risk.py'
+    args_str = ""
+    circom_path = AML_DIR / f"{circuit_name}.circom"
 
-    beta = comp["beta"]
-    sum_no_sd = comp["sum_no_sd"]
+    # Step 1: run circuit script
 
-    std_dev = math.sqrt(beta)
-    sd_comp = 7*std_dev/3600
-    print(f"Standard deviation: {std_dev}")
-    print("SD component: ", sd_comp)
+    code = os.system(f"cd {AML_DIR} && python3 {py_name} {args_str}")
+    if code != 0:
+        raise ValueError(f"Failed to run cd {AML_DIR} && python3 {circuit_name}.py. Error code: {code}")
 
-    comp_sum = sum_no_sd + sd_comp
-    bw = comp_sum / 8
+    mpc_settings_path = AML_DIR / f"{mpc_settings_name}"
+    with open(mpc_settings_path, 'r') as f:
+        mpc_settings = json.load(f)
+    num_parties = len(mpc_settings)
+    input_json_path_for_each_party = [AML_DIR / f"inputs_party_{i}.json" for i in range(num_parties)]
+
+    # ./outputs/{circuit_name}/...
+    output_dir = PROJECT_ROOT / Path("outputs") / f"{circuit_name}"
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    # Step 2: run circom-2-arithc
+    code = os.system(f"cd {CIRCOM_2_ARITHC_PROJECT_ROOT} && ./target/release/circom-2-arithc --input {circom_path} --output {output_dir}")
+    if code != 0:
+        raise ValueError(f"Failed to compile circom. Error code: {code}")
+
+
+    bristol_path = output_dir / "circuit.txt"
+    circuit_info_path = output_dir / "circuit_info.json"
+
+
+    # Step 3: generate MP-SPDZ circuit
+    mpspdz_circuit_path = generate_mpspdz_circuit(
+        bristol_path,
+        circuit_info_path,
+        mpc_settings_path,
+        circuit_name
+    )
+    print(f"Generated MP-SPDZ circuit at {mpspdz_circuit_path}")
+
+    # code = os.system(f"cd {MPSPDZ_CIRCUIT_DIR} && cp ./circuit.mpc {output_dir}")
+    code = os.system(f"cd {MPSPDZ_CIRCUIT_DIR} && cp ./{circuit_name}.mpc {output_dir}")
+    if code != 0:
+        raise ValueError(f"Failed to generate circuit.mpc. Error code: {code}")
     
-    print("Sum no sd:", sum_no_sd)
-    print("Final sum", comp_sum)
-    print("Bayes Weight (BW)", bw)
+
+    # Step 4: generate MP-SPDZ inputs for each party
+    for i, input_json_for_party_path in enumerate(input_json_path_for_each_party):
+        with open(input_json_for_party_path, 'r') as f:
+            party_input = json.load(f)
 
 
-    bw_pub = int(bw * 1000)
-    pml_pub = int(PML * 1000)
+        # Save the updated inputs
+        with open(input_json_for_party_path, 'w') as f:
+            json.dump(party_input, f)
 
+        # Now generate MP-SPDZ inputs with public + private merged
+        input_file_for_party_mpspdz = generate_mpspdz_inputs_for_party(
+            i,
+            input_json_for_party_path,
+            circuit_info_path,
+            mpc_settings_path,
+        )
+    
 
-    final_aml = workflow(circuit_name='aml', dir_name = 'aml', mpc_settings_change=True, public_inputs={"0.bw": bw_pub, "0.pml": pml_pub})
-    pml_rf = final_aml["fin"]
-    print("P(ML_RF)", pml_rf/1000)
+    st = time.time()
+    # Step 5: run MP-SPDZ circuit
+    outputs = run_mpspdz_circuit(mpspdz_circuit_path, num_parties)
+    print(f"\n\n\n========= Computation has finished =========\n\n")
+    print(f"Outputs: {outputs}")
 
-    # os.system(f"python3 circom-mp-spdz/aml-verify.py {bw} {PML}")
+    # ADDED BY ME
+    with open(output_dir / "outputs.json", 'w') as fp:
+        json.dump(outputs, fp)
+    print(f"Outputs written to {output_dir / 'outputs.json'}")
+    
+    # ------------
+
+    et = time.time()
+    elapsed_time = et - st
+    print('\n\n\nCIRCOM Execution time:', elapsed_time, 'seconds')
+    
+    unscaled_r = outputs["r_new"] / (10 ** 13)
+    print("Unscaled r_new: ", unscaled_r)
+
+    
+    
 
 
 if __name__ == '__main__':
