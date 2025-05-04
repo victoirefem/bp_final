@@ -1,15 +1,10 @@
 .vscode/
 
 # blockchain - dependencies and builds
-/blockchain/data/
-blockchain/node-modules/
 blockchain/artifacts/
 blockchain/lib/
-
-# blockchain - project files
-blockchain/package-lock.json
-blockchain/package.json
 blockchain/foundry.toml
+
 
 # blockchain - Git-related configs
 blockchain/.gitmodules
@@ -22,5 +17,13 @@ circuits/build/
 # Private data
 bank_data/
 
-# MPC results
+# MPC inputs/results
 MP-SPDZ/mpc-results/
+MP-SPDZ/Player-Data/
+
+# libraries
+node_modules/
+package-lock.json
+package.json
+
+
