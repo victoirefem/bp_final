@@ -39,7 +39,7 @@ node blockchain/scripts/deployRisk.js
 node blockchain/scripts/recordRisk.js [bankid]
 ```
 
-## MPC Scripts
+## Scripts - MPC contract
 
 ### Deploy MPC contract:
 
@@ -70,6 +70,13 @@ node script/inspectMpc.js --session [session_id]
 
 ```python
 python3 event_listener.py
+```
+
+
+## MPC
+
+```python
+python3 backend/run-risk-party.py [bankid]
 ```
 
 ## Circom

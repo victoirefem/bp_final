@@ -1,0 +1,22 @@
+{
+  "input_name_to_wire_index": {
+    "0.ai[2]": 0,
+    "0.ri[0]": 1,
+    "0.ri[2]": 7,
+    "0.t": 5,
+    "0.ri[1]": 2,
+    "0.ai[3]": 3,
+    "0.ai[1]": 4,
+    "0.ai[0]": 6,
+    "0.ri[3]": 8
+  },
+  "constants": {
+    "0.const_signal_5_30": {
+      "value": "5",
+      "wire_index": 16
+    }
+  },
+  "output_name_to_wire_index": {
+    "0.fin": 18
+  }
+}

@@ -5,27 +5,78 @@ import subprocess
 import re
 import math
 from pathlib import Path
+from dataclasses import dataclass
+from enum import Enum
+
+class AGateType(Enum):
+    ADD = 'AAdd'
+    DIV = 'ADiv'
+    EQ = 'AEq'
+    GT = 'AGt'
+    GEQ = 'AGEq'
+    LT = 'ALt'
+    LEQ = 'ALEq'
+    MUL = 'AMul'
+    NEQ = 'ANeq'
+    SUB = 'ASub'
+    BW_XOR = 'AXor'
+    POW = 'APow'
+    IDIV = 'AIntDiv'
+    MOD = 'AMod'
+    BW_SHL = 'AShiftL'
+    BW_SHR = 'AShiftR'
+    BW_OR = 'ABoolOr'
+    BW_AND = 'ABoolAnd'
+    # ABitOr,
+    # ABitAnd,
+
+
+MAP_GATE_TYPE_TO_OPERATOR_STR = {
+    AGateType.ADD: '+',
+    AGateType.MUL: '*',
+    AGateType.DIV: '/',
+    AGateType.LT: '<',
+    AGateType.SUB: '-',
+    AGateType.EQ: '==',
+    AGateType.NEQ: '!=',
+    AGateType.GT: '>',
+    AGateType.GEQ: '>=',
+    AGateType.LEQ: '<=',
+    AGateType.BW_XOR: "^",
+    AGateType.POW: "**",
+    AGateType.IDIV: "/",
+    AGateType.MOD: "%",
+    AGateType.BW_SHL: "<<",
+    AGateType.BW_SHR: ">>",
+    AGateType.BW_OR: "|",
+    AGateType.BW_AND:"&"
+}
+
 
 # === CONFIGURATION ===
-PROJECT_ROOT = Path(__file__).parent
+PROJECT_ROOT = Path(__file__).parent.parent
+BACKEND_ROOT = PROJECT_ROOT / 'backend'
 MPSPDZ_PROJECT_ROOT = PROJECT_ROOT / 'MP-SPDZ'
-#BANK_DATA_ROOT = PROJECT_ROOT / 'client-ledger' / 'data'
+MPSPDZ_CIRCUIT_DIR = MPSPDZ_PROJECT_ROOT / 'Programs' / 'Source'
+CIRCOM_2_ARITHC_PROJECT_ROOT = PROJECT_ROOT / 'circom-2-arithc'
+
+MPC_CONFIG_DIR = BACKEND_ROOT / 'mpc-config'
+MPC_CIRCUITS_DIR = BACKEND_ROOT / 'mpc-circuits'
+MPC_INPUTS_DIR = BACKEND_ROOT / 'mpc-inputs'
 
 RISK_CIRCUIT_NAME = "risk"
 HOSTS_FILE = "HOSTS"
 
-CIRCUIT_INFO_DIR = PROJECT_ROOT / 'circom-mp-spdz' / 'outputs'
-MPC_SETTINGS_DIR = PROJECT_ROOT / 'circom-mp-spdz' / 'examples' / 'aml'
-DEBUG_DATA_ROOT = MPC_SETTINGS_DIR
 
 
 # === CIRCOM-MP-SPDZ ===
+
 def generate_mpspdz_inputs_for_party(
     party: int,
     input_json_for_party_path: Path,
     circuit_name: str,
     circuit_info_path: Path,
-    mpc_settings_path: Path,
+    mpc_settings_path: Path
 ):
     '''
     Generate MP-SPDZ circuit inputs for a party, including support for public inputs.
@@ -67,29 +118,137 @@ def generate_mpspdz_inputs_for_party(
     return input_file_for_party_mpspdz
 
 
+def generate_mpspdz_circuit(
+    arith_circuit_path: Path,
+    circuit_info_path: Path,
+    mpc_settings_path: Path,
+    circuit_name: str = 'circuit',
+) -> Path:
+    '''
+    Generate the MP-SPDZ circuit code that can be run by MP-SPDZ.
+
+    Steps:
+    1. Read the arithmetic circuit file to get the gates
+    2. Read the circuit info file to get the input/output wire mapping
+    3. Read the input config file to get which party inputs should be read from
+    4. Generate the MP-SPDZ from the inputs above. The code should:
+        4.1. Initialize a `wires` list with input wires filled in: if a wire is a constant, fill it in directly. if a wire is an input, fill in which party this input comes from
+        4.2. Translate the gates into corresponding operations in MP-SPDZ
+        4.3. Print the outputs
+    '''
+   
+    with open(circuit_info_path, 'r') as f:
+        raw = json.load(f)
+
+    input_name_to_wire_index = {k: int(v) for k, v in raw['input_name_to_wire_index'].items()}
+    constants: dict[str, dict[str, int]] = raw['constants']
+    output_name_to_wire_index = {k: int(v) for k, v in raw['output_name_to_wire_index'].items()}
+    
+    with open(mpc_settings_path, 'r') as f:
+        mpc_settings = json.load(f)
+
+    # Each gate line looks like this: '2 1 1 0 3 AAdd'
+    @dataclass(frozen=True)
+    class Gate:
+        num_inputs: int
+        num_outputs: int
+        gate_type: AGateType
+        inputs_wires: list[int]
+        output_wire: int
+    with open(arith_circuit_path, 'r') as f:
+        first_line = next(f)
+        num_gates, num_wires = map(int, first_line.split())
+        second_line = next(f)
+        num_inputs = int(second_line.split()[0])
+        third_line = next(f)
+        num_outputs = int(third_line.split()[0])
+        # Skip the next line
+        next(f)
+
+        # Read the gate lines
+        gates: list[Gate] = []
+        for line in f:
+            line = line.split()
+            num_inputs = int(line[0])
+            num_outputs = int(line[1])
+            inputs_wires = [int(x) for x in line[2:2+num_inputs]]
+            # Support 2 inputs only for now
+            assert num_inputs == 2 and num_inputs == len(inputs_wires)
+            output_wires = list(map(int, line[2+num_inputs:2+num_inputs+num_outputs]))
+            output_wire = output_wires[0]
+            # Support 1 output only for now
+            assert num_outputs == 1 and num_outputs == len(output_wires)
+            gate_type = AGateType(line[2+num_inputs+num_outputs])
+            gates.append(Gate(num_inputs, num_outputs, gate_type, inputs_wires, output_wire))
+    assert len(gates) == num_gates
+
+    # Make inputs to circuit (not wires!!) from the user config
+    # Initialize a list `inputs` with `num_wires` with value=None
+    inputs_str_list = [None] * num_wires
+    print_outputs_str_list = []
+    # Fill in the constants
+    for name, o in constants.items():
+        value = int(o['value'])
+        # descaled_value = value / (10 ** scale)
+        wire_index = int(o['wire_index'])
+        # Sanity check
+        if inputs_str_list[wire_index] is not None:
+            raise ValueError(f"Wire index {wire_index} is already filled in: {inputs_str_list[wire_index]=}")
+        # Should check if we should use cfix instead
+        inputs_str_list[wire_index] = f'cint({value})'
+    for party_index, party_settings in enumerate(mpc_settings):
+        # Fill in the inputs from the parties
+        for input_name in party_settings['inputs']:
+            wire_index = int(input_name_to_wire_index[input_name])
+            # Sanity check
+            if inputs_str_list[wire_index] is not None:
+                raise ValueError(f"Wire index {wire_index} is already filled in: {inputs_str_list[wire_index]=}")
+            # Should check if we should use sfix instead
+            inputs_str_list[wire_index] = f'sint.get_input_from({party_index})'
+        # Fill in the outputs
+        for output_name in party_settings['outputs']:
+            wire_index = int(output_name_to_wire_index[output_name])
+            print_outputs_str_list.append(
+                f"print_ln_to({party_index}, 'outputs[{len(print_outputs_str_list)}]: {output_name}=%s', wires[{wire_index}].reveal_to({party_index}))"
+            )
+
+
+    # Replace all `None` with str `'None'`
+    inputs_str_list = [x if x is not None else 'None' for x in inputs_str_list]
+
+    #
+    # Generate the circuit code
+    #
+    inputs_str = '[' + ', '.join(inputs_str_list) + ']'
+
+    # Translate bristol gates to MP-SPDZ operations
+    gates_str_list = []
+    for gate in gates:
+        gate_str = ''
+        if gate.gate_type not in MAP_GATE_TYPE_TO_OPERATOR_STR:
+            raise ValueError(f"Gate type {gate.gate_type} is not supported")
+        else:
+            operator_str = MAP_GATE_TYPE_TO_OPERATOR_STR[gate.gate_type]
+            gate_str = f'wires[{gate.output_wire}] = wires[{gate.inputs_wires[0]}] {operator_str} wires[{gate.inputs_wires[1]}]'
+        gates_str_list.append(gate_str)
+    gates_str = '\n'.join(gates_str_list)
+
+    print_outputs_str = '\n'.join(print_outputs_str_list)
+
+    circuit_code = f"""wires = {inputs_str}
+{gates_str}
+# Print outputs
+{print_outputs_str}
+"""
+    # circuit_name = arith_circuit_path.stem
+    
+    out_mpc_path = MPSPDZ_CIRCUIT_DIR / f"{circuit_name}.mpc"
+    with open(out_mpc_path, 'w') as f:
+        f.write(circuit_code)
+    return out_mpc_path
+
 
 # === HELPERS ===
-
-def write_input_file(party_id, circuit_name):
-
-    input_json_for_party_path = Path(f"{DEBUG_DATA_ROOT}/inputs_party_{party_id}.json")
-    if not input_json_for_party_path.exists():
-        print(f"error: pdata file missing for party {party_id}: {input_json_for_party_path}")
-        sys.exit(1)
-
-    # circuit_info_path = CIRCUIT_INFO_DIR / 'comp' / 'circuit_info.json'
-    circuit_info_path = Path(f"{CIRCUIT_INFO_DIR}/{circuit_name}/circuit_info.json")
-    mpc_settings_path = Path(f"{MPC_SETTINGS_DIR}/mpc_settings_{circuit_name}.json")
-
-
-    generate_mpspdz_inputs_for_party(
-        party_id,
-        input_json_for_party_path,
-        circuit_name,
-        circuit_info_path,
-        mpc_settings_path,
-    )
-
 
 def compile_circuit(circuit):
     print()
@@ -114,10 +273,10 @@ def compile_circuit(circuit):
 
 
 
-def run_mpc(circuit_name, party_id):
+def run_mpc(circuit_name, party_id, num_parties):
     cmd = [
         "./semi-party.x",
-        "-N", "3",
+        "-N", str(num_parties),
         "-p", str(party_id),
         "-OF", ".",
         circuit_name,
@@ -141,29 +300,39 @@ def run_mpc(circuit_name, party_id):
         # === SAVE OUTPUTS ===
         output_dir = MPSPDZ_PROJECT_ROOT / "mpc-results"
         output_dir.mkdir(exist_ok=True)
-        output_path = output_dir / f"party{party_id}_{circuit_name}_result.json"
+        output_path = output_dir / f"party{party_id}_risk_result.json"
 
         # === PARSE OUTPUT ===
     
-        r_match = re.search(r'outputs\[\d+\]: 0\.r_new=([0-9.]+)', stdout)
+        # fin_match = re.search(r'outputs\[\d+\]: 0\.fin=([0-9.]+)', stdout)
+        fin_match = re.search(r'outputs\[\d+\]: 0\.fin=([+-]?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?)', stdout)
 
-        if r_match:
-            r_new_scaled = float(r_match.group(1))
-            r_new = r_new_scaled / (10**13)
-            
+
+        if fin_match:
+            fin = float(fin_match.group(1))
+            fin_unscaled = fin / 10 ** 7
 
             print(f"Parsed unscaled outputs for P{party_id}:")
-            print(f"  • R_new:        {r_new}")
+            print(f"  • R_new:        {fin}")
+            print(f"  • R_new (unscaled): {fin_unscaled}")
             print()
             
 
             with open(output_path, "w") as f:
                 json.dump({
-                    "r_new": r_new
+                    "fin": fin
                 }, f, indent=2)
 
+            if party_id == 0:
+                init_output_path = MPC_CONFIG_DIR / f"output.json"
+                with open(init_output_path, "w") as f:
+                    json.dump({
+                        "fin": fin_unscaled
+                    }, f, indent=2)
+                print(f"Saved results to {init_output_path}")
+
             print(f"Saved results to {output_path}")
-            return r_new
+            return fin
 
         else:
             print("error: Couldnt find expected output values in stdout")
@@ -179,14 +348,53 @@ def run_mpc(circuit_name, party_id):
 
     
 
-def workflow(circuit_name, party_id):
-    compile_circuit(circuit_name)
-    write_input_file(party_id, circuit_name)
-    return run_mpc(circuit_name, party_id)
+def workflow(party_id):
+
+    mpc_settings_path = Path(f"{MPC_CONFIG_DIR}/mpc_settings.json")
+
+    with open(mpc_settings_path, 'r') as f:
+        mpc_settings = json.load(f)
+    num_parties = len(mpc_settings)
+
+    bristol_path = MPC_CONFIG_DIR / "circuit.txt"
+    circuit_info_path = MPC_CONFIG_DIR / "circuit_info.json"
+    
+    mpc_circuit_name = f"risk_{party_id}"
+
+    # Step 2: generate MP-SPDZ circuit
+    mpspdz_circuit_path = generate_mpspdz_circuit(
+        bristol_path,    # circuit.txt
+        circuit_info_path,   #circuit_info.json
+        mpc_settings_path,
+        mpc_circuit_name
+    )
+
+    print(f"Generated MP-SPDZ circuit at {mpspdz_circuit_path}")
+
+    # Step 3: generate MP-SPDZ inputs for party
+    input_json_for_party_path = Path(f"{MPC_INPUTS_DIR}/inputs_party_{party_id}.json")
+    if not input_json_for_party_path.exists():
+        print(f"error: pdata file missing for party {party_id}: {input_json_for_party_path}")
+        sys.exit(1)
+
+    generate_mpspdz_inputs_for_party(
+        party_id,
+        input_json_for_party_path,
+        mpc_circuit_name,
+        circuit_info_path,
+        mpc_settings_path,
+    )
+
+    # Step 4: compile the circuit
+    compile_circuit(mpc_circuit_name)
+
+    # Step 5: start the MPC with other parties
+    return run_mpc(mpc_circuit_name, party_id, num_parties)
 
 
 
 # === MAIN ===
+
 def main():
     if len(sys.argv) < 2:
         print("Usage: python3 run_comp_party.py [party_id]")
@@ -195,7 +403,6 @@ def main():
     party_id = int(sys.argv[1])
 
     risk = workflow(
-        RISK_CIRCUIT_NAME,
         party_id
     )
 

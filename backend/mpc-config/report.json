@@ -1,0 +1,92 @@
+{
+  "inputs": [
+    {
+      "id": 1,
+      "names": [
+        "0.t"
+      ],
+      "value": null
+    },
+    {
+      "id": 36,
+      "names": [
+        "WeightSum.ai[0]",
+        "0.ai[0]"
+      ],
+      "value": null
+    },
+    {
+      "id": 37,
+      "names": [
+        "WeightSum.ai[1]",
+        "0.ai[1]"
+      ],
+      "value": null
+    },
+    {
+      "id": 38,
+      "names": [
+        "WeightSum.ai[2]",
+        "0.ai[2]"
+      ],
+      "value": null
+    },
+    {
+      "id": 39,
+      "names": [
+        "WeightSum.ai[3]",
+        "0.ai[3]"
+      ],
+      "value": null
+    },
+    {
+      "id": 40,
+      "names": [
+        "WeightSum.ri[0]",
+        "0.ri[0]"
+      ],
+      "value": null
+    },
+    {
+      "id": 41,
+      "names": [
+        "WeightSum.ri[1]",
+        "0.ri[1]"
+      ],
+      "value": null
+    },
+    {
+      "id": 42,
+      "names": [
+        "WeightSum.ri[2]",
+        "0.ri[2]"
+      ],
+      "value": null
+    },
+    {
+      "id": 43,
+      "names": [
+        "WeightSum.ri[3]",
+        "0.ri[3]"
+      ],
+      "value": null
+    },
+    {
+      "id": 44,
+      "names": [
+        "0.const_signal_5"
+      ],
+      "value": 5
+    }
+  ],
+  "outputs": [
+    {
+      "id": 47,
+      "names": [
+        "0.fin"
+      ],
+      "value": null
+    }
+  ],
+  "value_type": "sint"
+}
