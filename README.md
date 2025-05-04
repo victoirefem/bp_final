@@ -2,46 +2,41 @@
 
 Instructions at: [Anvil](https://medium.com/@maria.magdalena.makeup/foundry-anvil-a-local-ethereum-node-for-development-642ca28f7892)
 
-## Scripts (Client Ledger)
+## Tools
 
 ```python
-cd client-ledger
+node tools/processTx.js [bankid]
+node tools/processRisk.js [bankid]
 ```
+
+## Scripts (Tx Ledger)
+
 
 ### Deploy contract:
 
 ```python
-node script/deploy.js
+node blockchain/scripts/deployTx.js
 ```
 
-### Commit profiles
+### Record TXs from processed file
 
 ```python
-node helpers/generateSalt.js [partyid]
-node helpers/generateProfiles.js [partyid] [type: client, prf]
-node script/commit.js [partyid] [type: client, prf]
+node blockchain/scripts/recordTx.js [bankid]
 ```
 
-### Update profiles
+## Scripts (Risk Ledger)
+
+
+### Deploy contract:
 
 ```python
-node helpers/generateProfiles.js [partyid] [type: client, prf]
-node script/update.js
+node blockchain/scripts/deployRisk.js
 ```
 
-
-### Inspect Ledger
-
-```python
-node script/inspectLedger.js
-```
-
-### Generate proof
+### Record TXs from processed file
 
 ```python
-node helpers/generateCircuitInputs.js [partyid]
-run circom commands (r1cs, zkey, verification_key)...
- then generate witness
+node blockchain/scripts/recordRisk.js [bankid]
 ```
 
 ## MPC Scripts
@@ -78,6 +73,15 @@ python3 event_listener.py
 ```
 
 ## Circom
+
+## Generate proof
+
+```python
+node helpers/generateCircuitInputs.js [partyid]
+run circom commands (r1cs, zkey, verification_key)...
+ then generate witness
+ ```
+
 ```python
 # Step 1: write circuits
 # ----------------------

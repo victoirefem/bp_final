@@ -1,23 +1,26 @@
 .vscode/
 
-# client-ledger - dependencies and builds
-/client-ledger/data/
-client-ledger/node-modules/
-client-ledger/artifacts/
-client-ledger/lib/
+# blockchain - dependencies and builds
+/blockchain/data/
+blockchain/node-modules/
+blockchain/artifacts/
+blockchain/lib/
 
-# client-ledger - project files
-client-ledger/package-lock.json
-client-ledger/package.json
-client-ledger/foundry.toml
+# blockchain - project files
+blockchain/package-lock.json
+blockchain/package.json
+blockchain/foundry.toml
 
-# Client-ledger - Git-related configs
-client-ledger/.gitmodules
-client-ledger/.github/workflows/
+# blockchain - Git-related configs
+blockchain/.gitmodules
+blockchain/.github/workflows/
 
 # Circuits
 circuits/ptau/
 circuits/build/
+
+# Private data
+bank_data/
 
 # MPC results
 MP-SPDZ/mpc-results/
