@@ -54,15 +54,15 @@ MAP_GATE_TYPE_TO_OPERATOR_STR = {
 
 
 # === CONFIGURATION ===
-PROJECT_ROOT = Path(__file__).parent.parent
+PROJECT_ROOT = Path(__file__).parent.parent.parent
 BACKEND_ROOT = PROJECT_ROOT / 'backend'
 MPSPDZ_PROJECT_ROOT = PROJECT_ROOT / 'MP-SPDZ'
 MPSPDZ_CIRCUIT_DIR = MPSPDZ_PROJECT_ROOT / 'Programs' / 'Source'
 CIRCOM_2_ARITHC_PROJECT_ROOT = PROJECT_ROOT / 'circom-2-arithc'
 
-MPC_CONFIG_DIR = BACKEND_ROOT / 'mpc-config'
-MPC_CIRCUITS_DIR = BACKEND_ROOT / 'mpc-circuits'
-MPC_INPUTS_DIR = BACKEND_ROOT / 'mpc-inputs'
+MPC_CONFIG_DIR = BACKEND_ROOT / 'mpc' / 'mpc-config'
+MPC_CIRCUITS_DIR = BACKEND_ROOT / 'mpc' / 'mpc-circuits'
+MPC_INPUTS_DIR = BACKEND_ROOT / 'mpc' / 'mpc-inputs'
 
 RISK_CIRCUIT_NAME = "risk"
 HOSTS_FILE = "HOSTS"

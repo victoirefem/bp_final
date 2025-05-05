@@ -2,15 +2,17 @@ const fs = require("fs");
 const path = require("path");
 const { ethers } = require("ethers");
 
-// === Get bank name (e.g. bank1) ===
-const bankName = process.argv[2];
-if (!bankName) {
-  console.error("Usage: node blockchain/scripts/recordTransactions.js <bankid>");
+// === Get bankId and clientId from CLI ===
+const bankId = process.argv[2];
+const clientId = process.argv[3];
+
+if (!bankId || !clientId) {
+  console.error("Usage: node blockchain/scripts/recordTransactions.js <bankid> <clientid>");
   process.exit(1);
 }
 
-// === Load processed transactions ===
-const dataFile = path.join("bank_data", "processed", `${bankName}_income.json`);
+// === Load transactions for the given bank and client ===
+const dataFile = path.join("bank_data", "clients", `${bankId}_${clientId}_incomes.json`);
 if (!fs.existsSync(dataFile)) {
   console.error(`File not found: ${dataFile}`);
   process.exit(1);
@@ -30,9 +32,13 @@ const contract = new ethers.Contract(address, abi, signer);
 async function recordAll() {
   for (const { hash } of transactions) {
     console.log(`Recording hash: ${hash}`);
-    const tx = await contract.recordTransaction(hash);
-    await tx.wait();
-    console.log(`Transaction confirmed.`);
+    try {
+      const tx = await contract.recordTransaction(hash);
+      await tx.wait();
+      console.log(`Transaction confirmed.`);
+    } catch (err) {
+      console.error(`Failed to record hash ${hash}:`, err);
+    }
   }
 
   console.log("All transactions recorded.");

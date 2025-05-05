@@ -4,17 +4,17 @@ const csv = require("csv-parser");
 const { ethers } = require("ethers");
 
 // === Get bank name from CLI ===
-const bankName = process.argv[2];
+const bankId = process.argv[2];
 
-if (!bankName) {
-  console.error("Usage: node data_tools/processRisk.js <bank_name>");
+if (!bankId) {
+  console.error("Usage: node data_tools/hashRisks.js <bank_name>");
   process.exit(1);
 }
 
 // === Define file paths ===
-const inputFile = path.join("bank_data", "raw", `${bankName}_risk.csv`);
-const outputDir = path.join("bank_data", "processed");
-const outputFile = path.join(outputDir, `${bankName}_risk.json`);
+const inputFile = path.join("bank_data", "raw", `${bankId}_risks.csv`);
+const outputDir = path.join("bank_data", "hashed");
+const outputFile = path.join(outputDir, `${bankId}_risks.json`);
 
 // === Ensure output folder exists ===
 fs.mkdirSync(outputDir, { recursive: true });
@@ -25,7 +25,7 @@ fs.createReadStream(inputFile)
   .pipe(csv())
   .on("data", (row) => {
     const account = row["Account"];
-    const risk = row["Risk"];
+    const risk = row["Risk Score"];
 
     if (!account || !risk) {
       console.warn(`Skipping invalid row: ${JSON.stringify(row)}`);

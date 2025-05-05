@@ -2,44 +2,61 @@
 
 Instructions at: [Anvil](https://medium.com/@maria.magdalena.makeup/foundry-anvil-a-local-ethereum-node-for-development-642ca28f7892)
 
-## Tools
+## Tools (change directories in the files)
 
 ```python
-node tools/processTx.js [bankid]
-node tools/processRisk.js [bankid]
+node bank_data/tools/hashIncomeTxs.js [bankid]
+node bank_datatools/hashRisks.js [bankid]
+node bank_data/tools/filterClient.js [bankid] [account]
 ```
 
-## Scripts (Tx Ledger)
+## Blockchain scripts
 
 
-### Deploy contract:
+### Deploy:
 
 ```python
 node blockchain/scripts/deployTx.js
-```
-
-### Record TXs from processed file
-
-```python
-node blockchain/scripts/recordTx.js [bankid]
-```
-
-## Scripts (Risk Ledger)
-
-
-### Deploy contract:
-
-```python
 node blockchain/scripts/deployRisk.js
 ```
 
-### Record TXs from processed file
+
+### Record Txs and risks from clients folder
 
 ```python
-node blockchain/scripts/recordRisk.js [bankid]
+node blockchain/scripts/recordTxs.js <bankid> <clientid>
+node blockchain/scripts/recordRisks.js <bankid> <clientId1> [clientId2 ...]
 ```
 
-## Scripts - MPC contract
+## Backend Preprocessing
+```python
+python3 backend/pdata/generate-pdata.py <bankId> <clientId>
+```
+
+## ZK
+
+```python
+python3 backend/zk/generate-circuit.py <bankid> <clientId>
+# Public and private inputs => generate proof
+node backend/zk/get-commitments.js <bankId> <clientId>
+python3 backend/zk/get-private-data.py <bankId>
+node backend/zk/get-private-data.js <bankId>
+python3 backend/zk/generate-proof-party.py <bankId>
+```
+
+## MPC workflow
+
+```python
+python3 backend/mpc/run-risk-party.py <bankid>
+```
+
+
+
+
+
+
+
+<!-- ## Scripts - MPC contract
 
 ### Deploy MPC contract:
 
@@ -70,14 +87,10 @@ node script/inspectMpc.js --session [session_id]
 
 ```python
 python3 event_listener.py
-```
+``` -->
 
 
-## MPC
 
-```python
-python3 backend/run-risk-party.py [bankid]
-```
 
 ## Circom
 
@@ -90,30 +103,25 @@ run circom commands (r1cs, zkey, verification_key)...
  ```
 
 ```python
-# Step 1: write circuits
-# ----------------------
-# Step 2: generate circuits
-circom circuits/circom/input.circom --r1cs --wasm --sym -o circuits/build
 
-# Step 3: copy powers of tau
+# Step 1: generate circuits
+circom circuits/circom/txcheck.circom --r1cs --wasm --sym -o circuits/build/{bankId}
 
-# Step 4: snarkjs setup
-snarkjs groth16 setup circuits/build/input.r1cs circuits/ptau/pot10.ptau circuits/build/input.zkey
+# Step 2: snarkjs setup
+snarkjs groth16 setup circuits/build/{bankId}/txcheck.r1cs circuits/ptau/pot10.ptau circuits/build/{bankId}/txcheck.zkey
 
-# Step 5: export verification key
-snarkjs zkey export verificationkey circuits/build/input.zkey circuits/build/verification_key.json
+# Step 3: export verification key
+snarkjs zkey export verificationkey circuits/build/{bankId}/txcheck.zkey circuits/build/{bankId}/verification_key.json
 
-# Step 6: create input.json (take them from examples/aml)
-# -----------------------
 
-# Step 7: generate witness - continue
-node circuits/build/input_js/generate_witness.js circuits/build/input_js/input.wasm client-ledger/data/bank2/pdata/1488_202504.json circuits/build/witness.wtns
+# Step 4: generate witness 
+node circuits/build/{bankId}/txcheck_js/generate_witness.js circuits/build/{bankId}/txcheck_js/txcheck.wasm privatedata/{bankId}.json circuits/build/{bankId}/witness.wtns
 
-# Step 8: generate proof
-snarkjs groth16 prove circuits/build/input.zkey circuits/build/witness.wtns circuits/build/proof.json circuits/build/public.json
+# Step 5: generate proof
+snarkjs groth16 prove circuits/build/txcheck.zkey circuits/build/{bankId}/witness.wtns circuits/build/{bankId}/proof.json circuits/build/{bankId}/public.json
 
-# Step 9: verify proof
-snarkjs groth16 verify circuits/build/verification_key.json circuits/build/public.json circuits/build/proof.json
+# Step 6: verify proof
+snarkjs groth16 verify circuits/build/{bankId}/verification_key.json circuits/build/{bankId}/public.json circuits/build/{bankId}/proof.json
 ```
 
 ## MP-SPDZ

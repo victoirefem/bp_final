@@ -2,10 +2,10 @@ import os
 import json
 from pathlib import Path
 
-PROJECT_ROOT = Path(__file__).parent.parent
+PROJECT_ROOT = Path(__file__).parent.parent.parent
 BACKEND_ROOT = PROJECT_ROOT / 'backend'
-MPC_CONFIG_DIR = BACKEND_ROOT / 'mpc-config'
-MPC_CIRCUITS_DIR = BACKEND_ROOT / 'mpc-circuits'
+MPC_CONFIG_DIR = BACKEND_ROOT / 'mpc' / 'mpc-config'
+MPC_CIRCUITS_DIR = BACKEND_ROOT / 'mpc' / 'mpc-circuits'
 CIRCOM_2_ARITHC_PROJECT_ROOT = PROJECT_ROOT / 'circom-2-arithc'
 
 

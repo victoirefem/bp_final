@@ -2,41 +2,51 @@
 pragma solidity ^0.8.20;
 
 contract RiskLedger {
-    struct RiskScore {
-        bytes32 hash;       // hash of private risk score data
-        uint256 timestamp;  // when it was recorded
+    struct RiskEntry {
+        bytes32 hash;       // hash of the (account, risk score)
+        uint256 timestamp;  // block timestamp when recorded
     }
 
-    // bank address => list of risk scores
-    mapping(address => RiskScore[]) private riskScores;
+    // bank address => list of risk entries
+    mapping(address => RiskEntry[]) private risks;
 
-    event RiskScoreRecorded(
+    // bank address => (riskHash => index+1)
+    mapping(address => mapping(bytes32 => uint256)) public riskIndexByHash;
+
+    event RiskRecorded(
         address indexed bank,
         bytes32 indexed hash,
         uint256 timestamp
     );
 
-    /// @notice Record a hashed risk score
-    function recordRiskScore(bytes32 riskHash) external {
-        RiskScore memory score = RiskScore({
+    /// @notice Record a hashed risk entry
+    function recordRisk(bytes32 riskHash) external {
+        require(riskIndexByHash[msg.sender][riskHash] == 0, "Risk already recorded");
+
+        RiskEntry memory entry = RiskEntry({
             hash: riskHash,
             timestamp: block.timestamp
         });
 
-        riskScores[msg.sender].push(score);
-        emit RiskScoreRecorded(msg.sender, riskHash, block.timestamp);
+        risks[msg.sender].push(entry);
+        riskIndexByHash[msg.sender][riskHash] = risks[msg.sender].length; // store index+1
+
+        emit RiskRecorded(msg.sender, riskHash, block.timestamp);
     }
 
-    /// @notice Get number of risk scores recorded by a bank
-    function getRiskScoreCount(address bank) external view returns (uint256) {
-        return riskScores[bank].length;
+    /// @notice Get the number of recorded risks by a bank
+    function getRiskCount(address bank) external view returns (uint256) {
+        return risks[bank].length;
     }
 
-    /// @notice Get a specific risk score by index
-    function getRiskScore(address bank, uint256 index)
+    /// @notice Get a risk entry by hash
+    function getRiskByHash(address bank, bytes32 riskHash)
         external view returns (bytes32 hash, uint256 timestamp)
     {
-        RiskScore memory score = riskScores[bank][index];
-        return (score.hash, score.timestamp);
+        uint256 idx = riskIndexByHash[bank][riskHash];
+        require(idx > 0, "Risk not found");
+
+        RiskEntry memory entry = risks[bank][idx - 1];
+        return (entry.hash, entry.timestamp);
     }
 }
