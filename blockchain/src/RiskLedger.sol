@@ -39,6 +39,22 @@ contract RiskLedger {
         return risks[bank].length;
     }
 
+    function getRisksFromBank(address bank)
+        external
+        view
+        returns (bytes32[] memory hashes, uint256[] memory timestamps)
+    {
+        uint256 count = risks[bank].length;
+        hashes = new bytes32[](count);
+        timestamps = new uint256[](count);
+
+        for (uint256 i = 0; i < count; i++) {
+            hashes[i] = risks[bank][i].hash;
+            timestamps[i] = risks[bank][i].timestamp;
+        }
+    }
+
+
     /// @notice Get a risk entry by hash
     function getRiskByHash(address bank, bytes32 riskHash)
         external view returns (bytes32 hash, uint256 timestamp)

@@ -5,21 +5,24 @@ const circomlibjs = require("circomlibjs");
 
 // === Input args ===
 const bankId = process.argv[2];
-if (!bankId) {
-  console.error("Usage: node backend/zk/get-commitments.js <bankId>");
+const mode = process.argv[3]; // "i" or "r"
+
+if (!bankId || !["i", "r"].includes(mode)) {
+  console.error("Usage: node backend/zk/get-commitments.js <bankId> <i|r>");
   process.exit(1);
 }
 
-// === Paths ===
-const inputPath = path.join("backend", "pdata", "incomes", `${bankId}.json`);
-const outputPath = path.join("backend", "zk", "zk-inputs", `${bankId}_incomes.json`);
+const isIncome = mode === "i";
 
-const artifact = require("../../blockchain/artifacts/contracts/TxLedger.json");
+const inputPath = path.join("backend", "pdata", isIncome ? "incomes" : "risks", `${bankId}.json`);
+const outputPath = path.join("backend", "zk", "zk-inputs", `${bankId}_${isIncome ? "incomes" : "risks"}.json`);
+
+const artifact = require(`../../blockchain/artifacts/contracts/${isIncome ? "TxLedger" : "RiskLedger"}.json`);
 const provider = new ethers.providers.JsonRpcProvider("http://localhost:8545");
 const signer = provider.getSigner(0);
 const contract = new ethers.Contract(artifact.address, artifact.abi, signer);
 
-// === Convert a string to field-safe BigInt
+// === Convert string to field-safe BigInt
 function strToField(s) {
   const hash = ethers.utils.keccak256(ethers.utils.toUtf8Bytes(s));
   return BigInt(hash);
@@ -37,24 +40,37 @@ async function fetchCommitments() {
   const pdata = JSON.parse(fs.readFileSync(inputPath));
   const commitments = [];
   const bankAddress = await signer.getAddress();
+  console.log(`Verifying as: ${bankAddress}`);
 
-  for (const tx of pdata) {
-    const fields = [
-      strToField(tx["Timestamp"]),
-      strToField(tx["From Bank"]),
-      strToField(tx["From Account"]),
-      strToField(tx["To Account"]),
-      strToField(tx["Amount Received"]),
-      strToField(tx["Receiving Currency"]),
-      strToField(tx["Converted USD"])
-    ];
+  for (const entry of pdata) {
+    let fields;
+
+    if (isIncome) {
+      fields = [
+        strToField(entry["Timestamp"]),
+        strToField(entry["From Bank"]),
+        strToField(entry["From Account"]),
+        strToField(entry["To Account"]),
+        strToField(entry["Amount Received"]),
+        strToField(entry["Receiving Currency"]),
+        strToField(entry["Converted USD"])
+      ];
+    } else {
+      fields = [
+        strToField(entry["Account"]),
+        strToField(entry["Risk Score"])
+      ];
+    }
 
     const hashBigInt = poseidon(fields);
     const hashHex = "0x" + F.toString(hashBigInt, 16).padStart(64, "0");
 
     try {
-      const txOnChain = await contract.getTransactionByHash(bankAddress, hashHex);
-      commitments.push(txOnChain[0]); // .hash
+      const result = isIncome
+        ? await contract.getTransactionByHash(bankAddress, hashHex)
+        : await contract.getRiskByHash(bankAddress, hashHex);
+
+      commitments.push(result[0]);
       console.log(`Verified on-chain: ${hashHex}`);
     } catch (err) {
       console.error(`Hash not found on-chain: ${hashHex}`);
@@ -62,9 +78,10 @@ async function fetchCommitments() {
     }
   }
 
-  // Save
+  const key = isIncome ? "txCommitments" : "riskCommitments";
+
   fs.mkdirSync(path.dirname(outputPath), { recursive: true });
-  fs.writeFileSync(outputPath, JSON.stringify({ txCommitments: commitments }, null, 2));
+  fs.writeFileSync(outputPath, JSON.stringify({ [key]: commitments }, null, 2));
   console.log(`Public inputs written to ${outputPath}`);
 }
 

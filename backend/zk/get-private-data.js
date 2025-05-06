@@ -4,18 +4,20 @@ const { ethers } = require("ethers");
 
 // === Get args ===
 const bankId = process.argv[2];
+const mode = process.argv[3]; // "i" or "r"
 
-if (!bankId) {
-  console.error("Usage: node backend/zk/get-private-data.js <bankId>");
+if (!bankId || !["i", "r"].includes(mode)) {
+  console.error("Usage: node backend/zk/get-private-data.js <bankId> <i|r>");
   process.exit(1);
 }
 
-// === Paths ===
-const incomePath = path.join("backend", "pdata", "incomes", `${bankId}.json`);
-const zkInputPath = path.join("backend", "zk", "zk-inputs", `${bankId}_incomes.json`);
+const isIncome = mode === "i";
 
-if (!fs.existsSync(incomePath)) {
-  console.error(`Income data not found: ${incomePath}`);
+const inputPath = path.join("backend", "pdata", isIncome ? "incomes" : "risks", `${bankId}.json`);
+const zkInputPath = path.join("backend", "zk", "zk-inputs", `${bankId}_${isIncome ? "incomes" : "risks"}.json`);
+
+if (!fs.existsSync(inputPath)) {
+  console.error(`Data not found: ${inputPath}`);
   process.exit(1);
 }
 if (!fs.existsSync(zkInputPath)) {
@@ -29,27 +31,35 @@ function strToField(s) {
   return BigInt(hash);
 }
 
-// === Load input and convert ===
-const incomeData = JSON.parse(fs.readFileSync(incomePath));
+// === Load and convert ===
+const data = JSON.parse(fs.readFileSync(inputPath));
 const zkInputs = JSON.parse(fs.readFileSync(zkInputPath));
 
-const pdata = incomeData.map((tx) => [
-  strToField(tx["Timestamp"]),
-  strToField(tx["From Bank"]),
-  strToField(tx["From Account"]),
-  strToField(tx["To Account"]),
-  strToField(tx["Amount Received"]),
-  strToField(tx["Receiving Currency"]),
-  strToField(tx["Converted USD"])
-]);
+const pdata = data.map((entry) =>
+  isIncome
+    ? [
+        strToField(entry["Timestamp"]),
+        strToField(entry["From Bank"]),
+        strToField(entry["From Account"]),
+        strToField(entry["To Account"]),
+        strToField(entry["Amount Received"]),
+        strToField(entry["Receiving Currency"]),
+        strToField(entry["Converted USD"])
+      ]
+    : [
+        strToField(entry["Account"]),
+        strToField(entry["Risk Score"])
+      ]
+);
 
 zkInputs.pdata = pdata;
 
 // === Save updated zk-inputs ===
 fs.writeFileSync(
-    zkInputPath,
-    JSON.stringify(zkInputs, (key, value) =>
-      typeof value === "bigint" ? value.toString() : value,
-    2)
-  );
-console.log(`Appended ${pdata.length} records as pdata to ${zkInputPath}`);
+  zkInputPath,
+  JSON.stringify(zkInputs, (key, value) =>
+    typeof value === "bigint" ? value.toString() : value,
+  2)
+);
+
+console.log(`Appended ${pdata.length} ${isIncome ? "income" : "risk"} records to ${zkInputPath}`);

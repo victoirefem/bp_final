@@ -40,7 +40,7 @@ try {
   const riskData = JSON.parse(fs.readFileSync(riskInputFile));
 
   const filteredRisks = riskData.filter(entry =>
-    entry.original.account === clientAccount
+    entry.original.Account === clientAccount
   );
 
   fs.writeFileSync(riskOutputFile, JSON.stringify(filteredRisks, null, 2));

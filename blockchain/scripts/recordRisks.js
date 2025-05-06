@@ -39,6 +39,10 @@ async function recordAllRisks() {
     console.log(`Recording risk hash for client ${clientId}: ${hash}`);
 
     try {
+      const sender = await signer.getAddress();
+      console.log("Recording as:", sender);
+
+
       const tx = await contract.recordRisk(hash);
       await tx.wait();
       console.log(`Risk hash recorded for ${clientId}`);

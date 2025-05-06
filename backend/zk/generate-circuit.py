@@ -4,34 +4,38 @@ import json
 
 # === Validate input ===
 if len(sys.argv) != 3:
-    print("Usage: python generate-circuit.py <bankId> <clientId>")
+    print("Usage: python generate-circuit.py <bankId> <i|r>")
     sys.exit(1)
 
 bank_id = sys.argv[1]
-client_id = sys.argv[2]
+mode = sys.argv[2].lower()
 
-# === Read input JSON and count transactions ===
-input_file = os.path.join("backend", "pdata", "incomes", f"{bank_id}.json")
+if mode not in ["i", "r"]:
+    print("Invalid mode. Use 'i' for income or 'r' for risk.")
+    sys.exit(1)
 
+# === Paths & filenames ===
+is_income = mode == "i"
+input_file = os.path.join("backend", "pdata", "incomes" if is_income else "risks", f"{bank_id}.json")
+output_dir = os.path.join("backend", "zk", "circuits", "circom")
+output_file = os.path.join(output_dir, f"{'txcheck' if is_income else 'riskcheck'}_{bank_id}.circom")
+
+# === Load JSON and count records ===
 if not os.path.exists(input_file):
     print(f"Input file not found: {input_file}")
     sys.exit(1)
 
 with open(input_file, "r") as f:
-    tx_data = json.load(f)
+    data = json.load(f)
 
-tx_count = len(tx_data)
-
-if tx_count == 0:
-    print(f"No transactions found in {input_file}")
+count = len(data)
+if count == 0:
+    print(f"No records found in {input_file}")
     sys.exit(1)
 
-# === Output circuit path ===
-output_dir = os.path.join("backend", "zk", "circuits", "circom")
-output_file = os.path.join(output_dir, f"txcheck_{bank_id}.circom")
-
-# === Circuit code with dynamic tx_count ===
-circuit_code = f"""\
+# === Circuit code for income or risk ===
+if is_income:
+    circuit_code = f"""\
 pragma circom 2.1.0;
 
 include "./templates/poseidon.circom";
@@ -50,13 +54,33 @@ template TxCheck(n) {{
     }}
 }}
 
-component main {{ public [txCommitments] }} = TxCheck({tx_count});
+component main {{ public [txCommitments] }} = TxCheck({count});
+"""
+else:
+    circuit_code = f"""\
+pragma circom 2.1.0;
+
+include "./templates/poseidon.circom";
+
+template RiskCheck(n) {{
+    signal input riskCommitments[n];
+    signal input pdata[n][2];
+
+    component hashes[n];
+    for (var i = 0; i < n; i++) {{
+        hashes[i] = Poseidon(2);
+        hashes[i].inputs[0] <== pdata[i][0];
+        hashes[i].inputs[1] <== pdata[i][1];
+        hashes[i].out === riskCommitments[i];
+    }}
+}}
+
+component main {{ public [riskCommitments] }} = RiskCheck({count});
 """
 
-# === Write circuit file ===
+# === Write circuit to file ===
 os.makedirs(output_dir, exist_ok=True)
-
 with open(output_file, "w") as f:
     f.write(circuit_code)
 
-print(f"Generated circuit: {output_file} (tx_count = {tx_count})")
+print(f"Generated circuit: {output_file} ({'tx' if is_income else 'risk'}_count = {count})")

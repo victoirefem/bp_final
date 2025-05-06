@@ -5,9 +5,8 @@ Instructions at: [Anvil](https://medium.com/@maria.magdalena.makeup/foundry-anvi
 ## Tools (change directories in the files)
 
 ```python
-node bank_data/tools/hashIncomeTxs.js [bankid]
-node bank_datatools/hashRisks.js [bankid]
-node bank_data/tools/filterClient.js [bankid] [account]
+node bank_data/tools/hash.js 20
+node bank_data/tools/filterClient.js 20 80BC62F10
 ```
 
 ## Blockchain scripts
@@ -24,30 +23,29 @@ node blockchain/scripts/deployRisk.js
 ### Record Txs and risks from clients folder
 
 ```python
-node blockchain/scripts/recordTxs.js <bankid> <clientid>
-node blockchain/scripts/recordRisks.js <bankid> <clientId1> [clientId2 ...]
+node blockchain/scripts/recordTxs.js 20 80BC62F10
+node blockchain/scripts/recordRisks.js 20 80BC62F10 [clientId2 ...]
 ```
 
 ## Backend Preprocessing
 ```python
-python3 backend/pdata/generate-pdata.py <bankId> <clientId>
+python3 backend/pdata/generate-pdata.py 20 80BC62F10 <r/i>
 ```
 
 ## ZK
 
 ```python
-python3 backend/zk/generate-circuit.py <bankid> <clientId>
 # Public and private inputs => generate proof
-node backend/zk/get-commitments.js <bankId> <clientId>
-python3 backend/zk/get-private-data.py <bankId>
-node backend/zk/get-private-data.js <bankId>
-python3 backend/zk/generate-proof-party.py <bankId>
+node backend/zk/get-commitments.js 20 <r/i>
+node backend/zk/get-private-data.js 20 <r/i>
+python3 backend/zk/generate-circuit.py 20 <r/i>
+python3 backend/zk/generate-proof-party.py 20
 ```
 
 ## MPC workflow
 
 ```python
-python3 backend/mpc/run-risk-party.py <bankid>
+python3 backend/mpc/run-risk-party.py 20
 ```
 
 
