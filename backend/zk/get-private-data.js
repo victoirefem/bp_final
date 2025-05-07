@@ -62,4 +62,4 @@ fs.writeFileSync(
   2)
 );
 
-console.log(`Appended ${pdata.length} ${isIncome ? "income" : "risk"} records to ${zkInputPath}`);
+// console.log(`Appended ${pdata.length} ${isIncome ? "income" : "risk"} records to ${zkInputPath}`);

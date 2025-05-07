@@ -101,6 +101,7 @@ python3 backend/pdata/generate-pdata.py 18475 80BC62D30 r
 ## ZK
 
 ```python
+### DONE ###
 # Public and private inputs => generate proof
 # Init bank
 node backend/scripts/run-zk.js 20 i
@@ -121,78 +122,6 @@ python3 backend/mpc/run-risk-party.py 20
 ```
 
 
-
-
-
-
-
-<!-- ## Scripts - MPC contract
-
-### Deploy MPC contract:
-
-```python
-node script/deployMpc.js
-```
-
-### Interact 
-```python
-export BANK_INDEX=
-
-node client-ledger/script/interactMpc.js createSession
-
-node client-ledger/script/interactMpc.js joinSession --session [session_id]
-
-node client-ledger/script/interactMpc.js startSession --session [session_id]
-
-node client-ledger/script/interactMpc.js finishSession --session [session_id]
-```
-
-### Inspect MPC
-
-```python
-node script/inspectMpc.js --session [session_id]
-```
-
-### Set listener
-
-```python
-python3 event_listener.py
-``` -->
-
-
-
-
-## Circom
-
-## Generate proof
-
-```python
-node helpers/generateCircuitInputs.js [partyid]
-run circom commands (r1cs, zkey, verification_key)...
- then generate witness
- ```
-
-```python
-
-# Step 1: generate circuits
-circom circuits/circom/txcheck.circom --r1cs --wasm --sym -o circuits/build/{bankId}
-
-# Step 2: snarkjs setup
-snarkjs groth16 setup circuits/build/{bankId}/txcheck.r1cs circuits/ptau/pot10.ptau circuits/build/{bankId}/txcheck.zkey
-
-# Step 3: export verification key
-snarkjs zkey export verificationkey circuits/build/{bankId}/txcheck.zkey circuits/build/{bankId}/verification_key.json
-
-
-# Step 4: generate witness 
-node circuits/build/{bankId}/txcheck_js/generate_witness.js circuits/build/{bankId}/txcheck_js/txcheck.wasm privatedata/{bankId}.json circuits/build/{bankId}/witness.wtns
-
-# Step 5: generate proof
-snarkjs groth16 prove circuits/build/txcheck.zkey circuits/build/{bankId}/witness.wtns circuits/build/{bankId}/proof.json circuits/build/{bankId}/public.json
-
-# Step 6: verify proof
-snarkjs groth16 verify circuits/build/{bankId}/verification_key.json circuits/build/{bankId}/public.json circuits/build/{bankId}/proof.json
-```
 
 ## MP-SPDZ
 

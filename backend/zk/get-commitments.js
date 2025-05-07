@@ -41,7 +41,7 @@ async function fetchCommitments() {
   const pdata = JSON.parse(fs.readFileSync(inputPath));
   const commitments = [];
   const senderAddress = await signer.getAddress();
-  console.log(`Verifying on-chain data as: ${senderAddress}`);
+  // console.log(`Verifying on-chain data as: ${senderAddress}`);
 
   for (const entry of pdata) {
     let fields;
@@ -72,7 +72,7 @@ async function fetchCommitments() {
         : await contract.getRiskByHash(senderAddress, hashHex);
 
       commitments.push(result[0]);
-      console.log(`Verified on-chain: ${hashHex}`);
+      //console.log(`Verified on-chain: ${hashHex}`);
     } catch (err) {
       console.error(`Hash not found on-chain: ${hashHex}`);
       process.exit(1);
@@ -83,7 +83,7 @@ async function fetchCommitments() {
 
   fs.mkdirSync(path.dirname(outputPath), { recursive: true });
   fs.writeFileSync(outputPath, JSON.stringify({ [key]: commitments }, null, 2));
-  console.log(`Public inputs written to ${outputPath}`);
+  // console.log(`Public inputs written to ${outputPath}`);
 }
 
 fetchCommitments().catch(err => {

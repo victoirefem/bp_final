@@ -67,4 +67,4 @@ print("Step 5: Proof generated")
 run(f"snarkjs groth16 verify {VERIF_KEY} {PUBLIC} {PROOF}")
 print("Step 6: Proof verified")
 
-print("\nProof generation and verification completed successfully")
+# print("\nProof generation and verification completed successfully")

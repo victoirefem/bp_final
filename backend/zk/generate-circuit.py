@@ -83,4 +83,4 @@ os.makedirs(output_dir, exist_ok=True)
 with open(output_file, "w") as f:
     f.write(circuit_code)
 
-print(f"Generated circuit: {output_file} ({'tx' if is_income else 'risk'}_count = {count})")
+# print(f"Generated circuit: {output_file} ({'tx' if is_income else 'risk'}_count = {count})")

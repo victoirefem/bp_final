@@ -23,9 +23,10 @@ function run(cmd) {
 }
 
 // === ZK pipeline ===
+console.log(`===> ZK pipeline for bank: ${bankId} (${bankAddress})`);
 run(`node backend/zk/get-commitments.js ${bankId} ${mode} ${bankAddress} ${bankPrivateKey}`);
+console.log("-> Commitments fetched")
 run(`node backend/zk/get-private-data.js ${bankId} ${mode}`);
 run(`python3 backend/zk/generate-circuit.py ${bankId} ${mode}`);
 run(`python3 backend/zk/generate-proof-party.py ${bankId} ${mode}`);
-
-console.log("\nAll ZK proof steps completed");
+console.log("-> ZK proof generated")
