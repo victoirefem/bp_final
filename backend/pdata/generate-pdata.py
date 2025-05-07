@@ -65,4 +65,4 @@ os.makedirs(output_dir, exist_ok=True)
 with open(output_file, "w") as f:
     json.dump(filtered_rows, f, indent=2)
 
-print(f"Saved {len(filtered_rows)} filtered {'income' if data_type == 'i' else 'risk'} entries to {output_file}")
+# print(f"Saved {len(filtered_rows)} filtered {'income' if data_type == 'i' else 'risk'} entries to {output_file}")

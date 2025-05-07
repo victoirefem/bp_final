@@ -15,16 +15,19 @@ circuits/build/
 # Banks private data
 bank_data/raw/
 bank_data/hashed/
-bank_data/clients/
+bank_data/hash-to-record/
+bank_data/record-to-wallets/
 
 # Backend - pdata
 backend/pdata/incomes/
 backend/pdata/risks/
 
 # Backend - zk-inputs + pot + builds
-backend/zk/circuits/build/
-backend/zk/circuits/ptau/
-backend/zk/circuits/zk-inputs/
+backend/zk/zk-circuits/
+backend/zk/zk-inputs/
+
+backend/pdata/incomes
+backend/pdata/risks
 
 # MPC inputs/results
 MP-SPDZ/mpc-results/

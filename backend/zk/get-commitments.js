@@ -6,20 +6,21 @@ const circomlibjs = require("circomlibjs");
 // === Input args ===
 const bankId = process.argv[2];
 const mode = process.argv[3]; // "i" or "r"
+const bankAddress = process.argv[4];
+const bankPrivateKey = process.argv[5];
 
-if (!bankId || !["i", "r"].includes(mode)) {
-  console.error("Usage: node backend/zk/get-commitments.js <bankId> <i|r>");
+if (!bankId || !["i", "r"].includes(mode) || !bankAddress || !bankPrivateKey) {
+  console.error("Usage: node backend/zk/get-commitments.js <bankId> <i|r> <bankAddress> <bankPrivateKey>");
   process.exit(1);
 }
 
 const isIncome = mode === "i";
-
 const inputPath = path.join("backend", "pdata", isIncome ? "incomes" : "risks", `${bankId}.json`);
 const outputPath = path.join("backend", "zk", "zk-inputs", `${bankId}_${isIncome ? "incomes" : "risks"}.json`);
 
 const artifact = require(`../../blockchain/artifacts/contracts/${isIncome ? "TxLedger" : "RiskLedger"}.json`);
 const provider = new ethers.providers.JsonRpcProvider("http://localhost:8545");
-const signer = provider.getSigner(0);
+const signer = new ethers.Wallet(bankPrivateKey, provider);
 const contract = new ethers.Contract(artifact.address, artifact.abi, signer);
 
 // === Convert string to field-safe BigInt
@@ -39,8 +40,8 @@ async function fetchCommitments() {
 
   const pdata = JSON.parse(fs.readFileSync(inputPath));
   const commitments = [];
-  const bankAddress = await signer.getAddress();
-  console.log(`Verifying as: ${bankAddress}`);
+  const senderAddress = await signer.getAddress();
+  console.log(`Verifying on-chain data as: ${senderAddress}`);
 
   for (const entry of pdata) {
     let fields;
@@ -67,8 +68,8 @@ async function fetchCommitments() {
 
     try {
       const result = isIncome
-        ? await contract.getTransactionByHash(bankAddress, hashHex)
-        : await contract.getRiskByHash(bankAddress, hashHex);
+        ? await contract.getTransactionByHash(senderAddress, hashHex)
+        : await contract.getRiskByHash(senderAddress, hashHex);
 
       commitments.push(result[0]);
       console.log(`Verified on-chain: ${hashHex}`);

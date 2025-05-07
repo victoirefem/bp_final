@@ -17,8 +17,8 @@ if mode not in ["i", "r"]:
 # === Paths & filenames ===
 is_income = mode == "i"
 input_file = os.path.join("backend", "pdata", "incomes" if is_income else "risks", f"{bank_id}.json")
-output_dir = os.path.join("backend", "zk", "circuits", "circom")
-output_file = os.path.join(output_dir, f"{'txcheck' if is_income else 'riskcheck'}_{bank_id}.circom")
+output_dir = os.path.join("backend", "zk", "zk-circuits", "circom", bank_id)
+output_file = os.path.join(output_dir, f"{'txcheck' if is_income else 'riskcheck'}.circom")
 
 # === Load JSON and count records ===
 if not os.path.exists(input_file):
@@ -38,7 +38,7 @@ if is_income:
     circuit_code = f"""\
 pragma circom 2.1.0;
 
-include "./templates/poseidon.circom";
+include "../templates/poseidon.circom";
 
 template TxCheck(n) {{
     signal input txCommitments[n];
@@ -60,7 +60,7 @@ else:
     circuit_code = f"""\
 pragma circom 2.1.0;
 
-include "./templates/poseidon.circom";
+include "../templates/poseidon.circom";
 
 template RiskCheck(n) {{
     signal input riskCommitments[n];

@@ -2,59 +2,72 @@ const fs = require("fs");
 const path = require("path");
 const { ethers } = require("ethers");
 
-// === Get arguments ===
-const [bankId, ...clientIds] = process.argv.slice(2);
-
-if (!bankId || clientIds.length === 0) {
-  console.error("Usage: node blockchain/scripts/recordRisks.js <bankid> <clientId1> [clientId2 ...]");
+// === Get clientId from CLI ===
+const clientId = process.argv[2];
+if (!clientId) {
+  console.error("Usage: node blockchain/scripts/recordRisks.js <clientId>");
   process.exit(1);
 }
 
-// === Set up blockchain connection ===
+// === Load mappings ===
+const addressMap = JSON.parse(fs.readFileSync("bank_data/wallets/bank_address_map.json", "utf8"));
+const privateKeys = JSON.parse(fs.readFileSync("bank_data/wallets/bank_private_keys.json", "utf8"));
+
+// === Setup provider ===
 const provider = new ethers.providers.JsonRpcProvider("http://localhost:8545");
-const signer = provider.getSigner(0);
-
-// === Load RiskLedger contract ===
 const { abi, address } = require("../artifacts/contracts/RiskLedger.json");
-const contract = new ethers.Contract(address, abi, signer);
+const RiskLedger = new ethers.Contract(address, abi);
 
-// === Record risk for each client ===
-async function recordAllRisks() {
-  for (const clientId of clientIds) {
-    const filePath = path.join("bank_data", "clients", `${bankId}_${clientId}_risk.json`);
+async function recordRisk(bankId, address, privateKey) {
+  const signer = new ethers.Wallet(privateKey, provider);
+  const contract = RiskLedger.connect(signer);
 
-    if (!fs.existsSync(filePath)) {
-      console.warn(`Risk file not found for client ${clientId}: ${filePath}`);
-      continue;
-    }
-
-    const riskRecords = JSON.parse(fs.readFileSync(filePath));
-
-    if (riskRecords.length === 0) {
-      console.warn(`No risk records found for client ${clientId}`);
-      continue;
-    }
-
-    const { hash } = riskRecords[0]; // Only one record per file
-    console.log(`Recording risk hash for client ${clientId}: ${hash}`);
-
-    try {
-      const sender = await signer.getAddress();
-      console.log("Recording as:", sender);
-
-
-      const tx = await contract.recordRisk(hash);
-      await tx.wait();
-      console.log(`Risk hash recorded for ${clientId}`);
-    } catch (err) {
-      console.error(`Failed to record risk for ${clientId}:`, err);
-    }
+  const filePath = path.join("bank_data", "hash-to-record", `${bankId}_${clientId}_risk.json`);
+  if (!fs.existsSync(filePath)) {
+    console.warn(`Risk file not found for bank ${bankId}, client ${clientId}: ${filePath}`);
+    return;
   }
 
-  console.log("All risk entries processed.");
+  const data = JSON.parse(fs.readFileSync(filePath));
+  if (!Array.isArray(data) || data.length === 0) {
+    console.warn(`No risk data in ${filePath}`);
+    return;
+  }
+
+  const { hash } = data[0]; // One hash per client
+  //console.log(`Recording risk hash for ${bankId}/${clientId}: ${hash}`);
+  try {
+    const tx = await contract.recordRisk(hash);
+    await tx.wait();
+    //console.log(`Risk hash recorded for ${clientId} by bank ${bankId}`);
+  } catch (err) {
+    console.error(`Failed to record risk for ${clientId} by bank ${bankId}:`, err.reason || err.message);
+  }
 }
 
-recordAllRisks().catch((err) => {
+async function main() {
+  const accounts = await provider.listAccounts();
+  const initBankAddress = accounts[1].toLowerCase();
+
+  for (const [bankId, bankAddress] of Object.entries(addressMap)) {
+    if (bankAddress.toLowerCase() === initBankAddress) continue;
+
+    const privateKey = Object.entries(privateKeys).find(
+      ([addr]) => addr.toLowerCase() === bankAddress.toLowerCase()
+    )?.[1];
+
+    if (!privateKey) {
+      console.warn(`No private key found for ${bankId} (${bankAddress}). Skipping.`);
+      continue;
+    }
+
+    await recordRisk(bankId, bankAddress, privateKey);
+  }
+
+  //console.log("All risk hashes processed for invited banks.");
+}
+
+main().catch((err) => {
   console.error("Fatal error:", err);
   process.exit(1);
 });
