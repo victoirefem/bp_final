@@ -6,7 +6,9 @@
             "0.ai[0]",
             "0.ai[1]",
             "0.ai[2]",
-            "0.ai[3]"
+            "0.ai[3]",
+            "0.ai[4]",
+            "0.ai[5]"
         ],
         "outputs": [
             "0.fin"
@@ -15,8 +17,7 @@
     {
         "name": "p1",
         "inputs": [
-            "0.ri[0]",
-            "0.ri[1]"
+            "0.ri[0]"
         ],
         "outputs": [
             "0.fin"
@@ -25,7 +26,7 @@
     {
         "name": "p2",
         "inputs": [
-            "0.ri[2]"
+            "0.ri[1]"
         ],
         "outputs": [
             "0.fin"
@@ -34,7 +35,34 @@
     {
         "name": "p3",
         "inputs": [
+            "0.ri[2]"
+        ],
+        "outputs": [
+            "0.fin"
+        ]
+    },
+    {
+        "name": "p4",
+        "inputs": [
             "0.ri[3]"
+        ],
+        "outputs": [
+            "0.fin"
+        ]
+    },
+    {
+        "name": "p5",
+        "inputs": [
+            "0.ri[4]"
+        ],
+        "outputs": [
+            "0.fin"
+        ]
+    },
+    {
+        "name": "p6",
+        "inputs": [
+            "0.ri[5]"
         ],
         "outputs": [
             "0.fin"

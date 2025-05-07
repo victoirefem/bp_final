@@ -1,57 +1,55 @@
 import json
 import os
+import sys
 
-# Party input definitions
+# === Get arguments from CLI ===
+if len(sys.argv) != 4:
+    print("Usage: python backend/mpc/generate-mpc-settings.py <init_bank_id> <invited_bank_ids_csv> <inputs_csv>")
+    sys.exit(1)
 
-inputs_per_party = [5, 2, 1, 1]  # Bank B (3 weights + 1 t), Bank A (2 risks), Bank C (1 risk)
-N = len(inputs_per_party)  # Number of parties
+init_bank_id = sys.argv[1]
+invited_bank_ids = sys.argv[2].split(",")
+invited_inputs = list(map(int, sys.argv[3].split(",")))
 
-# File paths
-inlisttxt = "0.inlist"
-outtxt = "0.fin"
+inputs_per_party = [sum(invited_inputs) + 1] + invited_inputs
+N = len(inputs_per_party)
 
-list = []  # For mpc_settings.json
-inlistdictlist = []  # For inputs_party_*.json
+# === Validate
+if inputs_per_party[0] != sum(inputs_per_party[1:]) + 1:
+    print("Invalid input counts: init bank must provide sum of all others + 1")
+    sys.exit(1)
 
-# Counters
-ri_counter = 0  # counter for ri indexing
-
-for i in range(N):
-    inlistdict = {}
-    party_inputs = []
-
-    list.append({"name": f"p{i}", "inputs": [], "outputs": [outtxt]})
-    
-    # First party (Bank B) provides weights
-    if i == 0:
-        for j in range(inputs_per_party[i]):
-            if j == 0:
-                input_name = f"0.t"
-                list[i]['inputs'].append(input_name)
-            else:
-                input_name = f"0.ai[{j-1}]"
-                list[i]['inputs'].append(input_name)
-    else:
-        for j in range(inputs_per_party[i]):
-            input_name = f"0.ri[{ri_counter}]"
-            list[i]['inputs'].append(input_name)
-            ri_counter += 1
-
-
-# Save mpc_settings_comp.json
-
-# Ensure the "mpc-config" directory exists
+# === Output files
 output_dir = os.path.join(os.path.dirname(__file__), "mpc-config")
 os.makedirs(output_dir, exist_ok=True)
+output_file = os.path.join(output_dir, "mpc_settings.json")
 
-# Save mpc_settings.json in the "mpc-config" directory
-output_file = os.path.join(output_dir, 'mpc_settings.json')
-with open(output_file, 'w') as fp:
-    json.dump(list, fp, indent=4)
+# === Construct MPC settings structure
+settings = []
+ri_counter = 0
 
-# Optionally save inputs_party files (not requested now, kept here for context)
-# for i in range(M):
-#     with open(f"inputs_party_{i}.json", 'w') as fp:
-#         json.dump(inlistdictlist[i], fp)
+for i in range(N):
+    party_entry = {
+        "name": f"p{i}",
+        "inputs": [],
+        "outputs": ["0.fin"]
+    }
 
-print(f"Generated mpc_settings_risk.json for {N} parties")
+    if i == 0:  # Init bank
+        for j in range(inputs_per_party[i]):
+            if j == 0:
+                party_entry["inputs"].append("0.t")
+            else:
+                party_entry["inputs"].append(f"0.ai[{j-1}]")
+    else:  # Invited banks
+        for j in range(inputs_per_party[i]):
+            party_entry["inputs"].append(f"0.ri[{ri_counter}]")
+            ri_counter += 1
+
+    settings.append(party_entry)
+
+# === Write the file
+with open(output_file, "w") as f:
+    json.dump(settings, f, indent=4)
+
+print(f"Generated mpc_settings.json for {N} parties in {output_file}")

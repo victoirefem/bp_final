@@ -15,7 +15,9 @@ def run_zk(bank_id, data_type, bank_address, private_key):
         print(result.stderr)
         exit(1)
     else:
-        print(result.stdout)
+        print(f"ZK proof generated for bank {bank_id}")
+        # Uncomment the following line to see the output
+    #     print(result.stdout)
 
 
 def generate_pdata(bank_id, client_id, data_type):
@@ -252,6 +254,25 @@ def main():
     if not session_id:
         print("Cannot proceed without a valid session ID.")
         return
+    
+    print("--> Sending mpc_settings.json to all invited banks...")
+    print("Generating MPC settings...")
+
+    # For init bank: number of inputs = total risks (across invited banks) + 1
+    input_counts = [len(accounts) for accounts in grouped.values]
+    invited_ids_csv = ",".join(invited_bank_ids)
+    inputs_csv = ",".join(str(x) for x in input_counts)
+
+    subprocess.run(
+        ["python3", "backend/mpc/generate-mpc-settings.py", init_bank_id, invited_ids_csv, inputs_csv],
+        check=True
+    )
+
+    subprocess.run(
+        ["python3", "backend/mpc/generate-circuit-info.py"],
+        check=True
+    )
+
 
     
     join_session(session_id, invited_bank_addrs_keys)

@@ -8,7 +8,7 @@
       "value": null
     },
     {
-      "id": 36,
+      "id": 60,
       "names": [
         "WeightSum.ai[0]",
         "0.ai[0]"
@@ -16,7 +16,7 @@
       "value": null
     },
     {
-      "id": 37,
+      "id": 61,
       "names": [
         "WeightSum.ai[1]",
         "0.ai[1]"
@@ -24,7 +24,7 @@
       "value": null
     },
     {
-      "id": 38,
+      "id": 62,
       "names": [
         "WeightSum.ai[2]",
         "0.ai[2]"
@@ -32,7 +32,7 @@
       "value": null
     },
     {
-      "id": 39,
+      "id": 63,
       "names": [
         "WeightSum.ai[3]",
         "0.ai[3]"
@@ -40,7 +40,31 @@
       "value": null
     },
     {
-      "id": 40,
+      "id": 64,
+      "names": [
+        "WeightSum.ai[4]",
+        "0.ai[4]"
+      ],
+      "value": null
+    },
+    {
+      "id": 65,
+      "names": [
+        "WeightSum.ai[5]",
+        "0.ai[5]"
+      ],
+      "value": null
+    },
+    {
+      "id": 66,
+      "names": [
+        "WeightSum.ai[6]",
+        "0.ai[6]"
+      ],
+      "value": null
+    },
+    {
+      "id": 67,
       "names": [
         "WeightSum.ri[0]",
         "0.ri[0]"
@@ -48,7 +72,7 @@
       "value": null
     },
     {
-      "id": 41,
+      "id": 68,
       "names": [
         "WeightSum.ri[1]",
         "0.ri[1]"
@@ -56,7 +80,7 @@
       "value": null
     },
     {
-      "id": 42,
+      "id": 69,
       "names": [
         "WeightSum.ri[2]",
         "0.ri[2]"
@@ -64,7 +88,7 @@
       "value": null
     },
     {
-      "id": 43,
+      "id": 70,
       "names": [
         "WeightSum.ri[3]",
         "0.ri[3]"
@@ -72,7 +96,31 @@
       "value": null
     },
     {
-      "id": 44,
+      "id": 71,
+      "names": [
+        "WeightSum.ri[4]",
+        "0.ri[4]"
+      ],
+      "value": null
+    },
+    {
+      "id": 72,
+      "names": [
+        "WeightSum.ri[5]",
+        "0.ri[5]"
+      ],
+      "value": null
+    },
+    {
+      "id": 73,
+      "names": [
+        "WeightSum.ri[6]",
+        "0.ri[6]"
+      ],
+      "value": null
+    },
+    {
+      "id": 74,
       "names": [
         "0.const_signal_5"
       ],
@@ -81,7 +129,7 @@
   ],
   "outputs": [
     {
-      "id": 47,
+      "id": 77,
       "names": [
         "0.fin"
       ],
