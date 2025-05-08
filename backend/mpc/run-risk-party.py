@@ -295,7 +295,7 @@ def run_mpc(circuit_name, party_id, num_parties):
         )
         stdout = result.stdout
         print(f"MPC for party {party_id} finished successfully")
-        print(stdout)
+        # print(stdout)
 
         # === SAVE OUTPUTS ===
         output_dir = MPSPDZ_PROJECT_ROOT / "mpc-results"
@@ -313,8 +313,8 @@ def run_mpc(circuit_name, party_id, num_parties):
             fin_unscaled = fin / 10 ** 7
 
             print(f"Parsed unscaled outputs for P{party_id}:")
-            print(f"  • R_new:        {fin}")
-            print(f"  • R_new (unscaled): {fin_unscaled}")
+            print(f"  • R_part (scaled): {fin}")
+            print(f"  • R_part: {fin_unscaled}")
             print()
             
 
@@ -331,8 +331,8 @@ def run_mpc(circuit_name, party_id, num_parties):
                     }, f, indent=2)
                 print(f"Saved results to {init_output_path}")
 
-            print(f"Saved results to {output_path}")
-            return fin
+            # print(f"Saved results to {output_path}")
+            return fin_unscaled
 
         else:
             print("error: Couldnt find expected output values in stdout")

@@ -16,8 +16,10 @@ with open(mpc_settings_path, 'r') as f:
         mpc_settings = json.load(f)
 
 num_parties = len(mpc_settings)
+num_inv_parties = num_parties - 1
 
-circom_path = MPC_CIRCUITS_DIR / f"risk{num_parties}.circom"
+circom_path = MPC_CIRCUITS_DIR / f"risk{num_inv_parties}.circom"
+print(f"Compiling risk{num_inv_parties}.circom")
 
 # Run circom-2-arithc
 code = os.system(f"cd {CIRCOM_2_ARITHC_PROJECT_ROOT} && ./target/release/circom-2-arithc --input {circom_path} --output {MPC_CONFIG_DIR}")

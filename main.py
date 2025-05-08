@@ -3,6 +3,24 @@ import pandas as pd
 import subprocess
 import json
 
+def upload_proof_to_ipfs(bank_id, zk_type):
+    result = subprocess.run(
+        ["node", "bank_data/tools/uploadProof.js", bank_id, zk_type],
+        capture_output=True,
+        text=True
+    )
+    if result.returncode != 0:
+        print(f"Failed to upload proof for bank {bank_id}")
+        print(result.stderr)
+        return None
+
+    for line in result.stdout.splitlines():
+        if "ipfs://" in line:
+            return line.strip().split()[-1]
+    return None
+
+
+
 
 def run_zk(bank_id, data_type, bank_address, private_key):
     result = subprocess.run(
@@ -268,10 +286,29 @@ def main():
         check=True
     )
 
+    ### UNCOMMENT
     subprocess.run(
         ["python3", "backend/mpc/generate-circuit-info.py"],
         check=True
     )
+
+    # === Step: Write HOSTS file for MP-SPDZ
+    print("Configuring MP-SPDZ/HOSTS file...")
+
+    mpc_settings_path = "backend/mpc/mpc-config/mpc_settings.json"
+    with open(mpc_settings_path) as f:
+        mpc_settings = json.load(f)
+
+    num_parties = len(mpc_settings)
+    hosts_path = "MP-SPDZ/HOSTS"
+
+    with open(hosts_path, "w") as f:
+        for i in range(num_parties):
+            port = 5000 + i
+            f.write(f"127.0.1.1:{port}\n")
+
+    print(f"HOSTS file written with {num_parties} parties.")
+
 
 
     
@@ -287,9 +324,96 @@ def main():
             generate_pdata(bank_id, account_id, "r")
 
     print("8: Banks generate their ZK proofs...")
-    run_zk(init_bank_id, "i", signers[init_bank_id]["address"], signers[init_bank_id]["private_key"])
-    for bank_id in invited_bank_ids:
-        run_zk(bank_id, "r", signers[bank_id]["address"], signers[bank_id]["private_key"])
+    # UNCOMMENT
+    # run_zk(init_bank_id, "i", signers[init_bank_id]["address"], signers[init_bank_id]["private_key"])
+    # for bank_id in invited_bank_ids:
+    #     run_zk(bank_id, "r", signers[bank_id]["address"], signers[bank_id]["private_key"])
+
+    print("9: Generating MPC input files...")
+
+    subprocess.run(
+        ["python3", "backend/mpc/generate-mpc-inputs.py", init_bank_id, invited_ids_csv, inputs_csv],
+        check=True
+    )
+
+    print("Starting MPC parties...")
+
+    total_parties = 1 + len(invited_bank_ids)  # init + invited
+
+    
+
+    print("Starting MPC parties in parallel...")
+
+    processes = []
+    for party_id in range(total_parties):
+        print(f"Launching party {party_id}")
+        proc = subprocess.Popen(
+            ["python3", "backend/mpc/run-risk-party.py", str(party_id)],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE
+        )
+        processes.append((party_id, proc))
+
+    # Optional: Wait for all to complete and report status
+    for party_id, proc in processes:
+        stdout, stderr = proc.communicate()
+        print(f"\n=== Party {party_id} finished ===")
+        print(stdout.decode())
+        if proc.returncode != 0:
+            print(f"Error in party {party_id}:\n{stderr.decode()}")
+
+    # === Step: Extract R_part from party 0 result
+    r_part = None
+
+    for party_id, proc in processes:
+        stdout, stderr = proc.communicate()
+        if party_id == 0:
+            for line in stdout.decode().splitlines():
+                if "R_part:" in line:
+                    try:
+                        r_part = float(line.split("R_part:")[1].strip())
+                    except ValueError:
+                        pass
+
+    if r_part is None:
+        print("Could not extract R_part from MPC output of party 0.")
+        exit(1)
+
+    # === Compute final updated risk
+    # print(float(current_score))
+    # print(r_part)
+    updated_risk = 0.5 * float(current_score) + r_part
+
+    print(f"Initiator bank {init_bank_id} calculates the final risk score...")
+    print(f"New updated score for {client_id} is: {updated_risk:.6f}")
+
+
+
+    print("\nStoring ZK proofs on-chain...")
+
+    for party_id, bank_id in enumerate([init_bank_id] + invited_bank_ids):
+        signer = signers[bank_id]
+        zk_type = "incomes" if bank_id == init_bank_id else "risks"
+
+        ipfs_uri = upload_proof_to_ipfs(bank_id, zk_type)
+        if not ipfs_uri:
+            print(f"Skipping publish for bank {bank_id}")
+            continue
+
+        # print(f"Publishing proof for bank {bank_id} with CID {ipfs_uri}...")
+
+        # subprocess.run([
+        #     "node", "blockchain/scripts/publishProof.js",
+        #     session_id,
+        #     signer["address"],
+        #     signer["private_key"],
+        #     ipfs_uri
+        # ], check=True)
+
+
+
+
+
 
 
 if __name__ == "__main__":
