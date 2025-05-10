@@ -56,13 +56,13 @@ contract RiskLedger {
 
 
     /// @notice Get a risk entry by hash
-    function getRiskByHash(address bank, bytes32 riskHash)
+    function getRiskByHash(bytes32 riskHash)
         external view returns (bytes32 hash, uint256 timestamp)
     {
-        uint256 idx = riskIndexByHash[bank][riskHash];
+        uint256 idx = riskIndexByHash[msg.sender][riskHash];
         require(idx > 0, "Risk not found");
 
-        RiskEntry memory entry = risks[bank][idx - 1];
+        RiskEntry memory entry = risks[msg.sender][idx - 1];
         return (entry.hash, entry.timestamp);
     }
 }

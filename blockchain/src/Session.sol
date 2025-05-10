@@ -4,11 +4,19 @@ pragma solidity ^0.8.20;
 contract SessionManager {
     enum SessionState { Created, Joined, Started, ProofsSubmitted, Finished }
 
+    struct ProofData {
+        uint256[2] a;
+        uint256[2][2] b;
+        uint256[2] c;
+        uint256[] publicSignals;
+        bool submitted;
+    }
+
     struct Session {
         address initiator;
         address[] participants;
         mapping(address => bool) joined;
-        mapping(address => string) proofs;
+        mapping(address => ProofData) proofs;
         uint256 joinDeadline;
         SessionState state;
     }
@@ -19,7 +27,7 @@ contract SessionManager {
     event SessionCreated(uint256 sessionId, address initiator, address[] invited);
     event BankJoined(uint256 sessionId, address bank);
     event SessionStarted(uint256 sessionId);
-    event ProofPublished(uint256 sessionId, address bank, string proof);
+    event ProofPublished(uint256 sessionId, address bank);
     event SessionFinished(uint256 sessionId);
 
     modifier onlyInitiator(uint256 sessionId) {
@@ -84,7 +92,13 @@ contract SessionManager {
         emit SessionStarted(sessionId);
     }
 
-    function publishProof(uint256 sessionId, string calldata proof) external inState(sessionId, SessionState.Started) {
+    function publishProof(
+        uint256 sessionId,
+        uint256[2] calldata a,
+        uint256[2][2] calldata b,
+        uint256[2] calldata c,
+        uint256[] calldata publicSignals
+    ) external inState(sessionId, SessionState.Started) {
         Session storage s = sessions[sessionId];
 
         bool isParticipant = false;
@@ -96,19 +110,26 @@ contract SessionManager {
         }
 
         require(isParticipant || msg.sender == s.initiator, "Not a participant");
-        require(bytes(s.proofs[msg.sender]).length == 0, "Proof already submitted");
+        require(!s.proofs[msg.sender].submitted, "Proof already submitted");
 
-        s.proofs[msg.sender] = proof;
-        emit ProofPublished(sessionId, msg.sender, proof);
+        s.proofs[msg.sender] = ProofData({
+            a: a,
+            b: b,
+            c: c,
+            publicSignals: publicSignals,
+            submitted: true
+        });
+
+        emit ProofPublished(sessionId, msg.sender);
 
         bool allSubmitted = true;
         for (uint256 i = 0; i < s.participants.length; i++) {
-            if (bytes(s.proofs[s.participants[i]]).length == 0) {
+            if (!s.proofs[s.participants[i]].submitted) {
                 allSubmitted = false;
                 break;
             }
         }
-        if (allSubmitted && bytes(s.proofs[s.initiator]).length != 0) {
+        if (allSubmitted && s.proofs[s.initiator].submitted) {
             s.state = SessionState.ProofsSubmitted;
         }
     }
@@ -140,7 +161,21 @@ contract SessionManager {
         return sessions[sessionId].joined[bank];
     }
 
-    function getProof(uint256 sessionId, address bank) external view returns (string memory) {
-        return sessions[sessionId].proofs[bank];
+    function getProof(
+        uint256 sessionId,
+        address bank
+    )
+        external
+        view
+        returns (
+            uint256[2] memory a,
+            uint256[2][2] memory b,
+            uint256[2] memory c,
+            uint256[] memory publicSignals,
+            bool submitted
+        )
+    {
+        ProofData storage p = sessions[sessionId].proofs[bank];
+        return (p.a, p.b, p.c, p.publicSignals, p.submitted);
     }
 }

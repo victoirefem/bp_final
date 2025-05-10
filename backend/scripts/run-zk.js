@@ -28,5 +28,11 @@ run(`node backend/zk/get-commitments.js ${bankId} ${mode} ${bankAddress} ${bankP
 console.log("-> Commitments fetched")
 run(`node backend/zk/get-private-data.js ${bankId} ${mode}`);
 run(`python3 backend/zk/generate-circuit.py ${bankId} ${mode}`);
+const start = Date.now();
 run(`python3 backend/zk/generate-proof-party.py ${bankId} ${mode}`);
-console.log("-> ZK proof generated")
+const end = Date.now();
+console.log(`-> ZK proof generated (${bankId})`)
+
+const durationSec = ((end - start) / 1000).toFixed(2);
+console.log(`-> ZK proof generated in ${durationSec} seconds`);
+

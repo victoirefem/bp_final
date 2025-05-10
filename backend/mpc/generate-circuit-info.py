@@ -19,11 +19,11 @@ num_parties = len(mpc_settings)
 num_inv_parties = num_parties - 1
 
 circom_path = MPC_CIRCUITS_DIR / f"risk{num_inv_parties}.circom"
-print(f"Compiling risk{num_inv_parties}.circom")
+# print(f"Compiling risk{num_inv_parties}.circom")
 
 # Run circom-2-arithc
 code = os.system(f"cd {CIRCOM_2_ARITHC_PROJECT_ROOT} && ./target/release/circom-2-arithc --input {circom_path} --output {MPC_CONFIG_DIR}")
 if code != 0:
     raise ValueError(f"Failed to compile circom. Error code: {code}")
-else:
-    print(f"Compiled circuit to arithc for {num_parties} parties")
+# else:
+#     print(f"Compiled circuit to arithc for {num_parties} parties")

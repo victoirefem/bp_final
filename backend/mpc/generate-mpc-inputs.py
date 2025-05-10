@@ -20,7 +20,7 @@ with open(settings_path) as f:
 # === Load income data for p0
 income_path = os.path.join("backend", "pdata", "incomes", f"{init_bank_id}.json")
 if not os.path.exists(income_path):
-    print(f"❌ Income data not found: {income_path}")
+    print(f"Income data not found: {income_path}")
     sys.exit(1)
 
 with open(income_path) as f:
@@ -48,7 +48,7 @@ t_value = round(total_usd)
 # === Generate p0 input file
 p0 = next((party for party in settings if party["name"] == "p0"), None)
 if not p0:
-    print("❌ No p0 found in mpc_settings.json")
+    print("No p0 found in mpc_settings.json")
     sys.exit(1)
 
 p0_inputs = {}
@@ -69,7 +69,7 @@ for key in p0["inputs"]:
 p0_path = os.path.join(output_dir, "inputs_party_0.json")
 with open(p0_path, "w") as f:
     json.dump(p0_inputs, f, indent=2)
-print(f"✅ inputs_party_0.json written with {ai_index} ai[] values")
+# print(f"inputs_party_0.json written with {ai_index} ai[] values")
 
 # === Now handle each invited party (p1, p2, ...)
 for i, party in enumerate(settings):
@@ -78,13 +78,13 @@ for i, party in enumerate(settings):
 
     bank_index = i - 1
     if bank_index >= len(invited_bank_ids):
-        print(f"❌ Unexpected: no bank ID for party {party['name']}")
+        print(f"Unexpected: no bank ID for party {party['name']}")
         continue
 
     bank_id = invited_bank_ids[bank_index]
     risk_path = os.path.join("backend", "pdata", "risks", f"{bank_id}.json")
     if not os.path.exists(risk_path):
-        print(f"⚠ No risk file for bank {bank_id}, skipping...")
+        print(f"No risk file for bank {bank_id}, skipping...")
         continue
 
     with open(risk_path) as f:
@@ -110,4 +110,4 @@ for i, party in enumerate(settings):
     with open(party_out, "w") as f:
         json.dump(inputs_dict, f, indent=2)
 
-    print(f"✅ {party_out} written with {ri_index} ri[] values")
+    # print(f"{party_out} written with {ri_index} ri[] values")

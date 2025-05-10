@@ -52,4 +52,4 @@ for i in range(N):
 with open(output_file, "w") as f:
     json.dump(settings, f, indent=4)
 
-print(f"Generated mpc_settings.json for {N} parties in {output_file}")
+# print(f"Generated mpc_settings.json for {N} parties in {output_file}")

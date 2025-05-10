@@ -54,16 +54,19 @@ contract TxLedger {
 
 
 
-    // Bank provides the txHash => receives the Transaction
-    function getTransactionByHash(address bank, bytes32 txHash)
-        external view returns (bytes32 hash, uint256 timestamp)
+    /// @notice Retrieve a transaction by its hash for the calling bank
+    function getTransactionByHash(bytes32 txHash)
+        external
+        view
+        returns (bytes32 hash, uint256 timestamp)
     {
-        uint256 idx = txIndexByHash[bank][txHash];
+        uint256 idx = txIndexByHash[msg.sender][txHash];
         require(idx > 0, "Transaction not found");
-        
-        Transaction memory txRecord = transactions[bank][idx - 1];
+
+        Transaction memory txRecord = transactions[msg.sender][idx - 1];
         return (txRecord.hash, txRecord.timestamp);
-    }
+}
+
 
 }
 

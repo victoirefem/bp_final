@@ -33,7 +33,7 @@ async function main() {
     .filter(([_, addr]) => addr.toLowerCase() !== normalizedInitAddress)
     .map(([_, addr]) => addr);
 
-  console.log("Invited banks:", invitedBankAddresses);
+  // console.log("Invited banks:", invitedBankAddresses);
 
   // Load contract
   const artifactPath = path.join("blockchain", "artifacts", "contracts", "SessionManager.json");

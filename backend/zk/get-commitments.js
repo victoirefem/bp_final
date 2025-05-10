@@ -68,8 +68,8 @@ async function fetchCommitments() {
 
     try {
       const result = isIncome
-        ? await contract.getTransactionByHash(senderAddress, hashHex)
-        : await contract.getRiskByHash(senderAddress, hashHex);
+        ? await contract.getTransactionByHash(hashHex)
+        : await contract.getRiskByHash(hashHex);
 
       commitments.push(result[0]);
       //console.log(`Verified on-chain: ${hashHex}`);
