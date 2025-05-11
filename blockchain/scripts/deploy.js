@@ -49,7 +49,7 @@ async function compileAndDeploy(contractName, sourceFile) {
     bytecode
   }, null, 2));
 
-  console.log(`ABI + address saved to: ${outputPath}\n`);
+  // console.log(`ABI + address saved to: ${outputPath}\n`);
 }
 
 async function main() {
@@ -57,7 +57,7 @@ async function main() {
     await compileAndDeploy(name, file);
   }
 
-  console.log("Contracts deployed successfully.");
+  // console.log("Contracts deployed successfully.");
 }
 
 main().catch((err) => {

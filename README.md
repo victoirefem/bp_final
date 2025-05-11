@@ -118,9 +118,18 @@ node backend/scripts/run-zk.js 18475 r
 ## MPC 
 
 ```python
+DONE
 python3 backend/mpc/run-risk-party.py 20
 ```
 
+
+## Proof generation time
+```python
+node bank_data/tools/hashClientsProof.js 20
+node blockchain/scripts/deploy.js
+node blockchain/scripts/recordForProofs.js
+
+```
 
 
 ## MP-SPDZ

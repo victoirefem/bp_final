@@ -8,7 +8,7 @@
       "value": null
     },
     {
-      "id": 52,
+      "id": 44,
       "names": [
         "WeightSum.ai[0]",
         "0.ai[0]"
@@ -16,7 +16,7 @@
       "value": null
     },
     {
-      "id": 53,
+      "id": 45,
       "names": [
         "WeightSum.ai[1]",
         "0.ai[1]"
@@ -24,7 +24,7 @@
       "value": null
     },
     {
-      "id": 54,
+      "id": 46,
       "names": [
         "WeightSum.ai[2]",
         "0.ai[2]"
@@ -32,7 +32,7 @@
       "value": null
     },
     {
-      "id": 55,
+      "id": 47,
       "names": [
         "WeightSum.ai[3]",
         "0.ai[3]"
@@ -40,7 +40,7 @@
       "value": null
     },
     {
-      "id": 56,
+      "id": 48,
       "names": [
         "WeightSum.ai[4]",
         "0.ai[4]"
@@ -48,15 +48,7 @@
       "value": null
     },
     {
-      "id": 57,
-      "names": [
-        "WeightSum.ai[5]",
-        "0.ai[5]"
-      ],
-      "value": null
-    },
-    {
-      "id": 58,
+      "id": 49,
       "names": [
         "WeightSum.ri[0]",
         "0.ri[0]"
@@ -64,7 +56,7 @@
       "value": null
     },
     {
-      "id": 59,
+      "id": 50,
       "names": [
         "WeightSum.ri[1]",
         "0.ri[1]"
@@ -72,7 +64,7 @@
       "value": null
     },
     {
-      "id": 60,
+      "id": 51,
       "names": [
         "WeightSum.ri[2]",
         "0.ri[2]"
@@ -80,7 +72,7 @@
       "value": null
     },
     {
-      "id": 61,
+      "id": 52,
       "names": [
         "WeightSum.ri[3]",
         "0.ri[3]"
@@ -88,7 +80,7 @@
       "value": null
     },
     {
-      "id": 62,
+      "id": 53,
       "names": [
         "WeightSum.ri[4]",
         "0.ri[4]"
@@ -96,15 +88,7 @@
       "value": null
     },
     {
-      "id": 63,
-      "names": [
-        "WeightSum.ri[5]",
-        "0.ri[5]"
-      ],
-      "value": null
-    },
-    {
-      "id": 64,
+      "id": 54,
       "names": [
         "0.const_signal_5"
       ],
@@ -113,7 +97,7 @@
   ],
   "outputs": [
     {
-      "id": 67,
+      "id": 57,
       "names": [
         "0.fin"
       ],

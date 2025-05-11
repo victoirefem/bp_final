@@ -35,7 +35,10 @@ for tx in income_data:
     from_bank = tx["From Bank"]
     total_usd += usd
     if from_bank in bank_to_values:
-        bank_to_values[from_bank].append(usd)
+        if not bank_to_values[from_bank]:
+            bank_to_values[from_bank].append(usd)
+        else:
+            bank_to_values[from_bank][0] += usd
 
 # Flatten and order ai values by invited bank order
 ai_values = []
@@ -58,7 +61,7 @@ for key in p0["inputs"]:
         p0_inputs[key] = int(round(t_value))
     elif key.startswith("0.ai["):
         if ai_index >= len(ai_values):
-            print(f"⚠ Not enough ai values for key {key}")
+            print(f"Not enough ai values for key {key}")
             p0_inputs[key] = 0
         else:
             p0_inputs[key] = int(round(ai_values[ai_index]))

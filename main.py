@@ -162,6 +162,7 @@ def deploy_contracts():
         exit(1)
     else:
         print(result.stdout)
+        print()
 
 
 def hash_client(bank_id, client_id):
@@ -187,7 +188,7 @@ def hash_clients_for_banks(grouped_accounts):
 
 
 def main():
-    print("=== Risk Computation Coordinator ===")
+    print("=== Risk Computation Session ===")
 
     deploy_contracts()
 
@@ -246,12 +247,17 @@ def main():
         print("Aborting. No update will be performed.")
         return
     
+    
+    invited_bank_ids = list(grouped.index.astype(str))
+    all_bank_ids = [init_bank_id] + invited_bank_ids
+
+    generate_bank_map(init_bank_id, invited_bank_ids)
+
     # Load address/key maps once and cache them
     address_map = json.load(open("bank_data/wallets/bank_address_map.json"))
     key_map = json.load(open("bank_data/wallets/bank_private_keys.json"))
 
-    invited_bank_ids = list(grouped.index.astype(str))
-    all_bank_ids = [init_bank_id] + invited_bank_ids
+    
 
     # Build the signers dictionary first
     signers = {}
@@ -272,7 +278,7 @@ def main():
     hash_clients_for_banks(grouped)
     # print("\n--> All banks have their hashed data ready")
 
-    generate_bank_map(init_bank_id, invited_bank_ids)
+    
 
     print("\n=== TxLedger / RiskLedger SCs ===")
     record_transactions(init_bank_id, client_id, signers[init_bank_id]["private_key"])
@@ -407,6 +413,7 @@ def main():
 
     print(f"\n Calculating the final risk score...")
     print(f"Result: {updated_risk:.6f}")
+    print(f"Increased by (%): {100 * (updated_risk - float(current_score)) / (updated_risk):.2f}%")
     print("===")
 
     print("\n=== Session SC ===")
