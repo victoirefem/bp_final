@@ -1,6 +1,6 @@
 const { execSync } = require("child_process");
 
-// === Validate args ===
+// Args
 const bankId = process.argv[2];
 const mode = process.argv[3]; // "i" or "r"
 const bankAddress = process.argv[4];
@@ -11,7 +11,6 @@ if (!bankId || !["i", "r"].includes(mode) || !bankAddress || !bankPrivateKey) {
   process.exit(1);
 }
 
-// === Helper to run shell commands and forward output
 function run(cmd) {
   console.log(`\nRunning: ${cmd}`);
   try {
@@ -22,7 +21,7 @@ function run(cmd) {
   }
 }
 
-// === ZK pipeline ===
+//  ZK pipeline 
 console.log(`===> ZK pipeline for bank: ${bankId} (${bankAddress})`);
 run(`node backend/zk/get-commitments.js ${bankId} ${mode} ${bankAddress} ${bankPrivateKey}`);
 console.log("-> Commitments fetched")

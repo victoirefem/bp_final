@@ -1,135 +1,126 @@
-## Anvil
+# Privacy-preserving collaboration between banks
 
-Instructions at: [Anvil](https://medium.com/@maria.magdalena.makeup/foundry-anvil-a-local-ethereum-node-for-development-642ca28f7892)
+The project simulates the session between banks for risk updating. After entering bank Id, we are acting on his behalf. With the client Id specified, the information about his risk score and associated accounts with their respective banks Id is displayed.
 
-## Main
+After the confirmation for updating the risk score, the whole session pipeline, together with ZKP generating and MPC will start.
+
+## Prerequisites
+
+1. Python 3.10.12
+2. Node.js v20.12.0 and npm v10.5.0
+3. npx is available
+4. Working directory - the root of the project
+
+## Before start
+
+
+
+
+
+## Start
 
 ```python
 python3 main.py
 ```
 
 
-## Tools (DONE)
+## Cases for testing
+
+### Case1: 6 invited banks
 
 ```python
-### DONE ###
-# Init bank
-node bank_data/tools/hashClient.js 20 80BC62F10
+Init bank Id: 20
+Client Id: 80BC62F10
 
-# Joining banks
-node bank_data/tools/hashClient.js 14 80BC61040
-node bank_data/tools/hashClient.js 1467 8013C4030
-node bank_data/tools/hashClient.js 9571 80BC614F0
-node bank_data/tools/hashClient.js 18475 80BC62D30
-node bank_data/tools/hashClient.js 21615 80BC61C70
-node bank_data/tools/hashClient.js 224782 80BC62E20
-```
+### Files needed in bank_data/raw
+20_income.csv
+20_risks.csv
 
-## Blockchain scripts
-
-
-### Deploy:
-
-```python
-### DONE ###
-node blockchain/scripts/deploy.js
-```
-### Bank Id -> Bank Address
-
-```python
-### DONE ###
-node bank_data/tools/generateBankMap.js --init 20 --j 14 1467 9571 18475 21615 224782
-```
-
-### Record Txs and risks from clients folder
-
-```python
-### DONE ###
-# Init bank
-node blockchain/scripts/recordTxs.js 80BC62F10
-# node blockchain/scripts/recordRisks.js 20 80BC62F10 [clientId2 ...]
-
-# Joining banks
-node blockchain/scripts/recordRisks.js 1467 8013C4030
-node blockchain/scripts/recordRisks.js 9571 80BC614F0
-node blockchain/scripts/recordRisks.js 21615 80BC61C70
-node blockchain/scripts/recordRisks.js 224782 80BC62E20
-node blockchain/scripts/recordRisks.js 14 80BC61040
-node blockchain/scripts/recordRisks.js 18475 80BC62D30
+14_risks.csv
+1467_risks.csv
+18475_risks.csv
+21615_risks.csv
+224782_risks.csv
+9571_risks.csv
 ```
 
 
-
-### Create Session (Init Bank):
-
-```python
-### DONE ###
-node blockchain/scripts/create.js
-```
-
-## Join Session (Invited Banks)
-
+### Case2: 2 invited banks
 
 ```python
-### DONE ###
-node blockchain/scripts/join.js <sessionId>
-```
+Init bank Id: 148
+Client Id: 804ABCE90
 
-## Start Session (Init Bank)
+### Files needed in bank_data/raw
+71_income.csv
+71_risks.csv
 
-
-```python
-### DONE ###
-node blockchain/scripts/start.js <sessionId>
-```
-
-## Backend Preprocessing
-```python
-### DONE ###
-# Init Bank
-python3 backend/pdata/generate-pdata.py 20 80BC62F10 i
-
-# Joining Banks
-python3 backend/pdata/generate-pdata.py 1467 8013C4030 r
-python3 backend/pdata/generate-pdata.py 9571 80BC614F0 r
-python3 backend/pdata/generate-pdata.py 21615 80BC61C70 r
-python3 backend/pdata/generate-pdata.py 224782 80BC62E20 r
-python3 backend/pdata/generate-pdata.py 14 80BC61040 r
-python3 backend/pdata/generate-pdata.py 18475 80BC62D30 r
-```
-
-## ZK
-
-```python
-### DONE ###
-# Public and private inputs => generate proof
-# Init bank
-node backend/scripts/run-zk.js 20 i
-
-# Joining banks
-node backend/scripts/run-zk.js 1467 r
-node backend/scripts/run-zk.js 9571 r
-node backend/scripts/run-zk.js 21615 r
-node backend/scripts/run-zk.js 224782 r
-node backend/scripts/run-zk.js 14 r
-node backend/scripts/run-zk.js 18475 r
-```
-
-## MPC 
-
-```python
-DONE
-python3 backend/mpc/run-risk-party.py 20
+24856_risks.csv
+312283_risks.csv
 ```
 
 
-## Proof generation time
-```python
-node bank_data/tools/hashClientsProof.js 20
-node blockchain/scripts/deploy.js
-node blockchain/scripts/recordForProofs.js
+### Case3: 5 invited banks
 
+```python
+Init bank Id: 148348
+Client Id: 81203F670
+
+### Files needed in bank_data/raw
+148348_income.csv
+148348_risks.csv
+
+116_risks.csv
+148016_risks.csv
+348865_risks.csv
+48308_risks.csv
+48526_risks.csv
 ```
+
+### Case4: 3 invited banks
+
+```python
+Init bank Id: 12
+Client Id: 80044F690
+
+### Files needed in bank_data/raw
+12_income.csv
+12_risks.csv
+
+14290_risks.csv
+20_risks.csv
+23_risks.csv
+```
+
+
+### Case5: 8 invited banks
+
+```python
+Init Bank: 12
+Client Id: 8006757B0
+
+### Files needed in bank_data/raw
+12_income.csv
+12_risks.csv
+
+111433_risks.csv
+11157_risks.csv
+112637_risks.csv
+13037_risks.csv
+1502_risks.csv
+23833_risks.csv
+2591_risks.csv
+29089_risks.csv
+```
+
+
+
+## Anvil
+
+Instructions at: [Anvil](https://medium.com/@maria.magdalena.makeup/foundry-anvil-a-local-ethereum-node-for-development-642ca28f7892)
+
+
+
 
 
 ## MP-SPDZ

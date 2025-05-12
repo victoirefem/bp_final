@@ -3,11 +3,11 @@ pragma solidity ^0.8.20;
 
 contract TxLedger {
     struct Transaction {
-        bytes32 hash;       // hash of the private transaction data
-        uint256 timestamp;  // block timestamp when recorded
+        bytes32 hash;       
+        uint256 timestamp;  
     }
 
-    // bank address => list of transactions
+    // bank address => list of txs
     mapping(address => Transaction[]) private transactions;
     mapping(address => mapping(bytes32 => uint256)) public txIndexByHash;
 

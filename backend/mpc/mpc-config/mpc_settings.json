@@ -7,7 +7,10 @@
             "0.ai[1]",
             "0.ai[2]",
             "0.ai[3]",
-            "0.ai[4]"
+            "0.ai[4]",
+            "0.ai[5]",
+            "0.ai[6]",
+            "0.ai[7]"
         ],
         "outputs": [
             "0.fin"
@@ -53,6 +56,33 @@
         "name": "p5",
         "inputs": [
             "0.ri[4]"
+        ],
+        "outputs": [
+            "0.fin"
+        ]
+    },
+    {
+        "name": "p6",
+        "inputs": [
+            "0.ri[5]"
+        ],
+        "outputs": [
+            "0.fin"
+        ]
+    },
+    {
+        "name": "p7",
+        "inputs": [
+            "0.ri[6]"
+        ],
+        "outputs": [
+            "0.fin"
+        ]
+    },
+    {
+        "name": "p8",
+        "inputs": [
+            "0.ri[7]"
         ],
         "outputs": [
             "0.fin"

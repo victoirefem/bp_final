@@ -4,7 +4,7 @@ const csv = require("csv-parser");
 const { ethers } = require("ethers");
 const circomlibjs = require("circomlibjs");
 
-// === Get args ===
+// Args
 const bankId = process.argv[2];
 const clientIds = process.argv.slice(3);
 

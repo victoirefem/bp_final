@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const { ethers } = require("ethers");
 
-// === Get args from CLI ===
+// Args
 const bankId = process.argv[2];
 const clientId = process.argv[3];
 const privateKey = process.argv[4];
@@ -12,7 +12,7 @@ if (!bankId || !clientId || !privateKey) {
   process.exit(1);
 }
 
-// === Load bank address ===
+// Load bank addresses
 const addressMap = JSON.parse(fs.readFileSync("bank_data/wallets/bank_address_map.json", "utf8"));
 const bankAddress = addressMap[bankId];
 
@@ -21,7 +21,6 @@ if (!bankAddress) {
   process.exit(1);
 }
 
-// === Setup signer and contract ===
 const provider = new ethers.providers.JsonRpcProvider("http://localhost:8545");
 const signer = new ethers.Wallet(privateKey, provider);
 
@@ -43,12 +42,12 @@ if (!Array.isArray(data) || data.length === 0) {
 
 const { hash } = data[0];
 
-// === Submit to contract ===
+// Submit to contract
 async function run() {
   try {
     const tx = await contract.recordRisk(hash);
     await tx.wait();
-    console.log(`✔ Recorded risk hash for ${bankId}/${clientId}: ${hash}`);
+    console.log(`Recorded risk hash for ${bankId}/${clientId}: ${hash}`);
   } catch (err) {
     console.error(`Failed to record risk for ${bankId}/${clientId}:`, err.reason || err.message);
   }

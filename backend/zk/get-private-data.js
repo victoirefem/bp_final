@@ -2,9 +2,9 @@ const fs = require("fs");
 const path = require("path");
 const { ethers } = require("ethers");
 
-// === Get args ===
+// Args
 const bankId = process.argv[2];
-const mode = process.argv[3]; // "i" or "r"
+const mode = process.argv[3]; 
 
 if (!bankId || !["i", "r"].includes(mode)) {
   console.error("Usage: node backend/zk/get-private-data.js <bankId> <i|r>");
@@ -25,13 +25,12 @@ if (!fs.existsSync(zkInputPath)) {
   process.exit(1);
 }
 
-// === String to field: keccak256(utf8(string)) => BigInt
 function strToField(s) {
   const hash = ethers.utils.keccak256(ethers.utils.toUtf8Bytes(s));
   return BigInt(hash);
 }
 
-// === Load and convert ===
+// Load and convert 
 const data = JSON.parse(fs.readFileSync(inputPath));
 const zkInputs = JSON.parse(fs.readFileSync(zkInputPath));
 
@@ -54,7 +53,7 @@ const pdata = data.map((entry) =>
 
 zkInputs.pdata = pdata;
 
-// === Save updated zk-inputs ===
+// Save 
 fs.writeFileSync(
   zkInputPath,
   JSON.stringify(zkInputs, (key, value) =>

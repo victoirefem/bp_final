@@ -17,7 +17,7 @@ os.makedirs(output_dir, exist_ok=True)
 with open(settings_path) as f:
     settings = json.load(f)
 
-# === Load income data for p0
+# Load income data for p0
 income_path = os.path.join("backend", "pdata", "incomes", f"{init_bank_id}.json")
 if not os.path.exists(income_path):
     print(f"Income data not found: {income_path}")
@@ -40,7 +40,7 @@ for tx in income_data:
         else:
             bank_to_values[from_bank][0] += usd
 
-# Flatten and order ai values by invited bank order
+# Flatten and order ai values 
 ai_values = []
 for bank_id in invited_bank_ids:
     sorted_usds = sorted(bank_to_values[bank_id])  # optional sort
@@ -48,7 +48,7 @@ for bank_id in invited_bank_ids:
 
 t_value = round(total_usd)
 
-# === Generate p0 input file
+# Generate p0 input file
 p0 = next((party for party in settings if party["name"] == "p0"), None)
 if not p0:
     print("No p0 found in mpc_settings.json")
@@ -74,10 +74,10 @@ with open(p0_path, "w") as f:
     json.dump(p0_inputs, f, indent=2)
 # print(f"inputs_party_0.json written with {ai_index} ai[] values")
 
-# === Now handle each invited party (p1, p2, ...)
+
 for i, party in enumerate(settings):
     if party["name"] == "p0":
-        continue  # already handled
+        continue  
 
     bank_index = i - 1
     if bank_index >= len(invited_bank_ids):

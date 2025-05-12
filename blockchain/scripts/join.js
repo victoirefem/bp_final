@@ -22,7 +22,7 @@ async function main() {
 
   const provider = new ethers.providers.JsonRpcProvider("http://localhost:8545");
 
-  // Load SessionManager contract
+  // Load contract
   const artifactPath = path.join("blockchain", "artifacts", "contracts", "SessionManager.json");
   const sessionArtifact = JSON.parse(fs.readFileSync(artifactPath, "utf8"));
   const contractAddress = sessionArtifact.address;

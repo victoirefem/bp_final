@@ -23,7 +23,7 @@ const provider = new ethers.providers.JsonRpcProvider("http://localhost:8545");
 const signer = new ethers.Wallet(bankPrivateKey, provider);
 const contract = new ethers.Contract(artifact.address, artifact.abi, signer);
 
-// === Convert string to field-safe BigInt
+// string to field
 function strToField(s) {
   const hash = ethers.utils.keccak256(ethers.utils.toUtf8Bytes(s));
   return BigInt(hash);

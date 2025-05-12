@@ -9,7 +9,6 @@ def run(cmd, cwd=None):
         print("Command failed.")
         sys.exit(1)
 
-# === Validate input ===
 if len(sys.argv) != 3:
     print("Usage: python generate-proof-party.py <bankId> <i|r>")
     sys.exit(1)
@@ -25,7 +24,7 @@ is_income = mode == "i"
 prefix = "txcheck" if is_income else "riskcheck"
 input_tag = "incomes" if is_income else "risks"
 
-# === Set up paths ===
+# Paths
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))  # backend/
 ZK_DIR = os.path.join(ROOT, "zk")
 CIRCUIT_DIR = os.path.join(ZK_DIR, "zk-circuits")

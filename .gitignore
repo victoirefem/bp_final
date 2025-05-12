@@ -8,15 +8,11 @@ blockchain/.gitmodules
 blockchain/.github/workflows/
 blockchain/.gitignore
 
-# Circuits
-circuits/ptau/
-circuits/build/
 
 # Banks private data
 bank_data/raw/
-bank_data/hashed/
 bank_data/hash-to-record/
-bank_data/record-to-wallets/
+bank_data/hash-to-record/proofs/
 
 # Backend - pdata
 backend/pdata/incomes/

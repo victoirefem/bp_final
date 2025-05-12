@@ -2,7 +2,7 @@ const { ethers } = require("ethers");
 const fs = require("fs");
 const path = require("path");
 
-// === Parse arguments ===
+// arguments
 const [initBankAddress, initBankPrivateKey] = process.argv.slice(2);
 if (!initBankAddress || !initBankPrivateKey) {
   console.error("Usage: node start.js <initBankAddress> <initBankPrivateKey>");

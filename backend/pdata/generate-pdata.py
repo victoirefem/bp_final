@@ -3,7 +3,6 @@ import json
 import os
 import sys
 
-# === Input validation ===
 if len(sys.argv) != 4:
     print("Usage: python backend/pdata/generate-pdata.py <bankId> <clientId> <type: i|r>")
     sys.exit(1)
@@ -16,7 +15,7 @@ if data_type not in ["i", "r"]:
     print("Invalid type. Use 'i' for income or 'r' for risk.")
     sys.exit(1)
 
-# === Determine input/output paths ===
+
 if data_type == "i":
     input_file = os.path.join("bank_data", "raw", f"{bank_id}_income.csv")
     output_dir = os.path.join("backend", "pdata", "incomes")
@@ -26,7 +25,7 @@ else:  # data_type == "r"
     output_dir = os.path.join("backend", "pdata", "risks")
     output_file = os.path.join(output_dir, f"{bank_id}.json")
 
-# === Filtering logic ===
+# Filtering
 filtered_rows = []
 
 try:
@@ -59,7 +58,7 @@ except FileNotFoundError:
     print(f"Input file not found: {input_file}")
     sys.exit(1)
 
-# === Write filtered output ===
+# Save
 os.makedirs(output_dir, exist_ok=True)
 
 with open(output_file, "w") as f:

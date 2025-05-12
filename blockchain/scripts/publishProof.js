@@ -2,7 +2,7 @@ const { ethers } = require("ethers");
 const fs = require("fs");
 const path = require("path");
 
-// Args: sessionId, bankAddress, bankPrivateKey, proofType (e.g., incomes or risks)
+// Args
 const [sessionId, bankAddress, bankPrivateKey, proofType] = process.argv.slice(2);
 
 if (!sessionId || !bankAddress || !bankPrivateKey || !proofType) {
@@ -41,9 +41,9 @@ async function main() {
   try {
     const tx = await contract.publishProof(sessionId, a, b, c, publicSignals);
     await tx.wait();
-    console.log(`✔ Proof published for ${bankId} in session ${sessionId}`);
+    console.log(`Proof published for ${bankId} in session ${sessionId}`);
   } catch (err) {
-    console.error("❌ Failed to publish proof:", err.reason || err.message);
+    console.error("Failed to publish proof:", err.reason || err.message);
     process.exit(1);
   }
 }

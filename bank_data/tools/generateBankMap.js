@@ -27,22 +27,21 @@ async function main() {
   const accounts = await provider.listAccounts();
 
   const totalNeeded = 1 + joinBankIds.length; // init + invited
-  if (totalNeeded + 1 > accounts.length) { // +1 because accounts[0] is reserved (e.g. regulator)
+  if (totalNeeded + 1 > accounts.length) { // accounts[0] is reserved 
     console.error(`Anvil only provides ${accounts.length} accounts; need ${totalNeeded + 1} including the regulator.`);
     process.exit(1);
   }
 
   const mapping = {};
 
-  // Map init bank → accounts[1]
+
   mapping[initBankId] = accounts[1];
 
-  // Map invited banks → accounts[2], [3], ...
   for (let i = 0; i < joinBankIds.length; i++) {
     mapping[joinBankIds[i]] = accounts[i + 2];
   }
 
-  // Write to blockchain/wallets/bank_address_map.json
+
   const outputPath = path.join("bank_data", "wallets", "bank_address_map.json");
   fs.mkdirSync(path.dirname(outputPath), { recursive: true });
   fs.writeFileSync(outputPath, JSON.stringify(mapping, null, 2));

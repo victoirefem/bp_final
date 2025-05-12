@@ -8,7 +8,7 @@
       "value": null
     },
     {
-      "id": 44,
+      "id": 68,
       "names": [
         "WeightSum.ai[0]",
         "0.ai[0]"
@@ -16,7 +16,7 @@
       "value": null
     },
     {
-      "id": 45,
+      "id": 69,
       "names": [
         "WeightSum.ai[1]",
         "0.ai[1]"
@@ -24,7 +24,7 @@
       "value": null
     },
     {
-      "id": 46,
+      "id": 70,
       "names": [
         "WeightSum.ai[2]",
         "0.ai[2]"
@@ -32,7 +32,7 @@
       "value": null
     },
     {
-      "id": 47,
+      "id": 71,
       "names": [
         "WeightSum.ai[3]",
         "0.ai[3]"
@@ -40,7 +40,7 @@
       "value": null
     },
     {
-      "id": 48,
+      "id": 72,
       "names": [
         "WeightSum.ai[4]",
         "0.ai[4]"
@@ -48,7 +48,31 @@
       "value": null
     },
     {
-      "id": 49,
+      "id": 73,
+      "names": [
+        "WeightSum.ai[5]",
+        "0.ai[5]"
+      ],
+      "value": null
+    },
+    {
+      "id": 74,
+      "names": [
+        "WeightSum.ai[6]",
+        "0.ai[6]"
+      ],
+      "value": null
+    },
+    {
+      "id": 75,
+      "names": [
+        "WeightSum.ai[7]",
+        "0.ai[7]"
+      ],
+      "value": null
+    },
+    {
+      "id": 76,
       "names": [
         "WeightSum.ri[0]",
         "0.ri[0]"
@@ -56,7 +80,7 @@
       "value": null
     },
     {
-      "id": 50,
+      "id": 77,
       "names": [
         "WeightSum.ri[1]",
         "0.ri[1]"
@@ -64,7 +88,7 @@
       "value": null
     },
     {
-      "id": 51,
+      "id": 78,
       "names": [
         "WeightSum.ri[2]",
         "0.ri[2]"
@@ -72,7 +96,7 @@
       "value": null
     },
     {
-      "id": 52,
+      "id": 79,
       "names": [
         "WeightSum.ri[3]",
         "0.ri[3]"
@@ -80,7 +104,7 @@
       "value": null
     },
     {
-      "id": 53,
+      "id": 80,
       "names": [
         "WeightSum.ri[4]",
         "0.ri[4]"
@@ -88,7 +112,31 @@
       "value": null
     },
     {
-      "id": 54,
+      "id": 81,
+      "names": [
+        "WeightSum.ri[5]",
+        "0.ri[5]"
+      ],
+      "value": null
+    },
+    {
+      "id": 82,
+      "names": [
+        "WeightSum.ri[6]",
+        "0.ri[6]"
+      ],
+      "value": null
+    },
+    {
+      "id": 83,
+      "names": [
+        "WeightSum.ri[7]",
+        "0.ri[7]"
+      ],
+      "value": null
+    },
+    {
+      "id": 84,
       "names": [
         "0.const_signal_5"
       ],
@@ -97,7 +145,7 @@
   ],
   "outputs": [
     {
-      "id": 57,
+      "id": 87,
       "names": [
         "0.fin"
       ],

@@ -2,7 +2,6 @@ import json
 import os
 import sys
 
-# === Get arguments from CLI ===
 if len(sys.argv) != 4:
     print("Usage: python backend/mpc/generate-mpc-settings.py <init_bank_id> <invited_bank_ids_csv> <inputs_csv>")
     sys.exit(1)
@@ -14,17 +13,15 @@ invited_inputs = list(map(int, sys.argv[3].split(",")))
 inputs_per_party = [sum(invited_inputs) + 1] + invited_inputs
 N = len(inputs_per_party)
 
-# === Validate
 if inputs_per_party[0] != sum(inputs_per_party[1:]) + 1:
     print("Invalid input counts: init bank must provide sum of all others + 1")
     sys.exit(1)
 
-# === Output files
 output_dir = os.path.join(os.path.dirname(__file__), "mpc-config")
 os.makedirs(output_dir, exist_ok=True)
 output_file = os.path.join(output_dir, "mpc_settings.json")
 
-# === Construct MPC settings structure
+
 settings = []
 ri_counter = 0
 
@@ -48,7 +45,7 @@ for i in range(N):
 
     settings.append(party_entry)
 
-# === Write the file
+# Save
 with open(output_file, "w") as f:
     json.dump(settings, f, indent=4)
 

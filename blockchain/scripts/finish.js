@@ -1,10 +1,8 @@
-// blockchain/scripts/finish.js
-
 const { ethers } = require("ethers");
 const fs = require("fs");
 const path = require("path");
 
-// Args: sessionId, bankAddress, privateKey
+// Args
 const [sessionId, bankAddress, privateKey] = process.argv.slice(2);
 
 if (!sessionId || !bankAddress || !privateKey) {

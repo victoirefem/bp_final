@@ -3,8 +3,8 @@ pragma solidity ^0.8.20;
 
 contract RiskLedger {
     struct RiskEntry {
-        bytes32 hash;       // hash of the (account, risk score)
-        uint256 timestamp;  // block timestamp when recorded
+        bytes32 hash;      
+        uint256 timestamp;  
     }
 
     // bank address => list of risk entries

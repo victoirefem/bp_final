@@ -4,7 +4,7 @@ import subprocess
 import json
 
 def prepare_and_publish_proof(bank_id, proof_type, address, private_key, session_id):
-    # Step 1: Prepare the proof using prepareProof.js
+    # Prepare proof
     result = subprocess.run(
         ["node", "bank_data/tools/prepareProof.js", bank_id, proof_type],
         capture_output=True,
@@ -20,7 +20,7 @@ def prepare_and_publish_proof(bank_id, proof_type, address, private_key, session
         print(f"Expected proof file not found: {proof_file}")
         return
 
-    # Step 2: Publish proof using publishProof.js
+    # Publish proof 
     args = [
         "node", "blockchain/scripts/publishProof.js",
         str(session_id),
@@ -112,7 +112,7 @@ def create_session(init_bank_address, init_bank_private_key):
     for line in result.stdout.splitlines():
         if line.strip().startswith("Session ID:"):
             return line.strip().split(":")[1].strip()
-    print("Warning: Session ID not found in output.")
+    print("Warning: Session id not found in output.")
     return None
 
 
@@ -222,7 +222,7 @@ def main():
 
     df_risks = pd.read_csv(risk_path, dtype=str)
     if "Account" not in df_risks.columns or "Risk Score" not in df_risks.columns:
-        print(f"Risk CSV must contain 'Account' and 'Risk Score'")
+        print(f"Risk CSV must contain Account and Risk Score")
         return
 
     matching_risk = df_risks[df_risks["Account"] == client_id]
@@ -253,13 +253,12 @@ def main():
 
     generate_bank_map(init_bank_id, invited_bank_ids)
 
-    # Load address/key maps once and cache them
+    # Load address/key maps 
     address_map = json.load(open("bank_data/wallets/bank_address_map.json"))
     key_map = json.load(open("bank_data/wallets/bank_private_keys.json"))
 
     
-
-    # Build the signers dictionary first
+    # Build the signers dict
     signers = {}
     for bank_id in all_bank_ids:
         address = address_map[bank_id]
@@ -268,12 +267,10 @@ def main():
         )
         signers[bank_id] = {"address": address, "private_key": private_key}
 
-    # Now it's safe to use signers
     invited_bank_addrs_keys = [
         (signers[bank_id]["address"], signers[bank_id]["private_key"]) for bank_id in invited_bank_ids
     ]
 
-    # Continue with hashing and recording
     hash_client(init_bank_id, client_id)
     hash_clients_for_banks(grouped)
     # print("\n--> All banks have their hashed data ready")
@@ -320,7 +317,7 @@ def main():
     )
 
     # Write HOSTS file for MP-SPDZ
-    # print("Configuring MP-SPDZ/HOSTS file...")
+    # print("Configuring hosts file...")
 
     mpc_settings_path = "backend/mpc/mpc-config/mpc_settings.json"
     with open(mpc_settings_path) as f:
@@ -332,7 +329,7 @@ def main():
     with open(hosts_path, "w") as f:
         for i in range(num_parties):
             port = 5000 + i
-            f.write(f"127.0.1.1:{port}\n")
+            f.write(f"localhost:{port}\n")
 
     # print(f"HOSTS file written with {num_parties} parties.")
 
@@ -381,15 +378,6 @@ def main():
         )
         processes.append((party_id, proc))
 
-    # Optional: Wait for all to complete and report status
-    # for party_id, proc in processes:
-    #     stdout, stderr = proc.communicate()
-    #     # print(f"\n=== Party {party_id} finished ===")
-    #     # print(stdout.decode())
-    #     if proc.returncode != 0:
-    #         print(f"Error in party {party_id}:\n{stderr.decode()}")
-
-    # === Step: Extract R_part from party 0 result
     r_part = None
 
     for party_id, proc in processes:
@@ -406,7 +394,7 @@ def main():
         print("Could not extract R_part from MPC output of party 0.")
         exit(1)
 
-    # === Compute final updated risk
+    # Compute final updated risk
     # print(float(current_score))
     # print(r_part)
     updated_risk = 0.5 * float(current_score) + r_part
@@ -425,7 +413,7 @@ def main():
         session_id
     )
 
-    # Publish invited banks' proofs
+    # Publish invited banks proofs
     for bank_id in invited_bank_ids:
         prepare_and_publish_proof(
             bank_id, "risks",
@@ -443,14 +431,11 @@ def main():
         capture_output=True,
         text=True
     )
-
     if result.returncode != 0:
         print("Failed to finish session:")
         print(result.stderr)
     else:
         print(result.stdout)
-
-
 
 
 if __name__ == "__main__":
