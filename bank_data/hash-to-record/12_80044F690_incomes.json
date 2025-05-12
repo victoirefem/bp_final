@@ -1,0 +1,194 @@
+[
+  {
+    "hash": "0x2d393e19c6ae6267f938acd56d924b1921856a24e14997192768a5d1b27503eb",
+    "original": {
+      "Timestamp": "2022/09/02 11:44",
+      "fromBank": "14290",
+      "fromAccount": "801BA48E0",
+      "toAccount": "80044F690",
+      "amount": "1581.32",
+      "currency": "EUR",
+      "usd": "1790.5452074958953"
+    }
+  },
+  {
+    "hash": "0x08f5fc091e88f733b1c0cb2089c8066665ac3058fb2fd301ccf99be9cda596a4",
+    "original": {
+      "Timestamp": "2022/09/01 15:42",
+      "fromBank": "20",
+      "fromAccount": "800169910",
+      "toAccount": "80044F690",
+      "amount": "259.06",
+      "currency": "EUR",
+      "usd": "293.3363528279454"
+    }
+  },
+  {
+    "hash": "0x044c0d64769f93362fdcaae1af09098b97b61df4f8e4a5626977d9afc73142a3",
+    "original": {
+      "Timestamp": "2022/09/01 15:44",
+      "fromBank": "20",
+      "fromAccount": "800169910",
+      "toAccount": "80044F690",
+      "amount": "198.16",
+      "currency": "EUR",
+      "usd": "224.37864462435599"
+    }
+  },
+  {
+    "hash": "0x04bb85f857162c93946870abbcbdffe666a64f8ed9f0476909acaad0eca0bffe",
+    "original": {
+      "Timestamp": "2022/09/02 09:14",
+      "fromBank": "23",
+      "fromAccount": "80044F7D0",
+      "toAccount": "80044F690",
+      "amount": "3291.44",
+      "currency": "EUR",
+      "usd": "3726.932004755704"
+    }
+  },
+  {
+    "hash": "0x1af9e0ccc7b915a9c7a9b9909fd4312560b9e4e50c1af7361de063ca17aaafe3",
+    "original": {
+      "Timestamp": "2022/09/02 23:40",
+      "fromBank": "20",
+      "fromAccount": "800169910",
+      "toAccount": "80044F690",
+      "amount": "259.06",
+      "currency": "EUR",
+      "usd": "293.3363528279454"
+    }
+  },
+  {
+    "hash": "0x25cf9cd83e98b168f7d8f6ce9b5d4dcb01e8451133b495ca8fb6d0388b7291b9",
+    "original": {
+      "Timestamp": "2022/09/02 23:54",
+      "fromBank": "20",
+      "fromAccount": "800169910",
+      "toAccount": "80044F690",
+      "amount": "198.16",
+      "currency": "EUR",
+      "usd": "224.37864462435599"
+    }
+  },
+  {
+    "hash": "0x1127df17253326964d106d438ff4b62b8d6050eacef6b23680561ac44b42e912",
+    "original": {
+      "Timestamp": "2022/09/05 03:16",
+      "fromBank": "20",
+      "fromAccount": "800169910",
+      "toAccount": "80044F690",
+      "amount": "259.06",
+      "currency": "EUR",
+      "usd": "293.3363528279454"
+    }
+  },
+  {
+    "hash": "0x046b8db4d1a19198959379429a4088479865732690dae25d6aedcd78884d12de",
+    "original": {
+      "Timestamp": "2022/09/05 03:01",
+      "fromBank": "20",
+      "fromAccount": "800169910",
+      "toAccount": "80044F690",
+      "amount": "198.16",
+      "currency": "EUR",
+      "usd": "224.37864462435599"
+    }
+  },
+  {
+    "hash": "0x28d2718a12f6a37cc202dac837cd4b197bdee23cd891ce1d19f2df3a7ceb08ae",
+    "original": {
+      "Timestamp": "2022/09/06 15:56",
+      "fromBank": "20",
+      "fromAccount": "800169910",
+      "toAccount": "80044F690",
+      "amount": "259.06",
+      "currency": "EUR",
+      "usd": "293.3363528279454"
+    }
+  },
+  {
+    "hash": "0x221cd83875eda3db8cc05141c2fdcb93be30a356db9780f46fe6b426c7d39bc0",
+    "original": {
+      "Timestamp": "2022/09/06 15:42",
+      "fromBank": "20",
+      "fromAccount": "800169910",
+      "toAccount": "80044F690",
+      "amount": "198.16",
+      "currency": "EUR",
+      "usd": "224.37864462435599"
+    }
+  },
+  {
+    "hash": "0x065b4c8711e6d912bebad9a6e20848add8bc94ab915e4c4674d686747c271916",
+    "original": {
+      "Timestamp": "2022/09/07 15:02",
+      "fromBank": "20",
+      "fromAccount": "800169910",
+      "toAccount": "80044F690",
+      "amount": "259.06",
+      "currency": "EUR",
+      "usd": "293.3363528279454"
+    }
+  },
+  {
+    "hash": "0x176dd74d3a688e3fa6dad6fc69a5f87d9b3ca85bed1fc7016dc9845611324f97",
+    "original": {
+      "Timestamp": "2022/09/07 15:12",
+      "fromBank": "20",
+      "fromAccount": "800169910",
+      "toAccount": "80044F690",
+      "amount": "198.16",
+      "currency": "EUR",
+      "usd": "224.37864462435599"
+    }
+  },
+  {
+    "hash": "0x2398a21a077c6b9a911f84969b4d7c8a20676a3b464c3c9dd6f0485a0ccdc568",
+    "original": {
+      "Timestamp": "2022/09/08 12:22",
+      "fromBank": "20",
+      "fromAccount": "800169910",
+      "toAccount": "80044F690",
+      "amount": "259.06",
+      "currency": "EUR",
+      "usd": "293.3363528279454"
+    }
+  },
+  {
+    "hash": "0x2541f2594adde162cda235c2bd48e42a4caeb1de170e8b7fffba0cb4d5b4ddcc",
+    "original": {
+      "Timestamp": "2022/09/08 12:10",
+      "fromBank": "20",
+      "fromAccount": "800169910",
+      "toAccount": "80044F690",
+      "amount": "198.16",
+      "currency": "EUR",
+      "usd": "224.37864462435599"
+    }
+  },
+  {
+    "hash": "0x256f6287b3528a80aeca82b8118dd18104fa9483815d3e3c9600fe828ba2d0ba",
+    "original": {
+      "Timestamp": "2022/09/09 15:40",
+      "fromBank": "20",
+      "fromAccount": "800169910",
+      "toAccount": "80044F690",
+      "amount": "259.06",
+      "currency": "EUR",
+      "usd": "293.3363528279454"
+    }
+  },
+  {
+    "hash": "0x187781aaf48873c05ff168824b5ed049a1596542ba39d02774f79ac1ee7d92e7",
+    "original": {
+      "Timestamp": "2022/09/09 15:56",
+      "fromBank": "20",
+      "fromAccount": "800169910",
+      "toAccount": "80044F690",
+      "amount": "198.16",
+      "currency": "EUR",
+      "usd": "224.37864462435599"
+    }
+  }
+]

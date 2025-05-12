@@ -1,0 +1,344 @@
+[
+  {
+    "Timestamp": "2022/09/01 22:12",
+    "From Bank": "1502",
+    "From Account": "80053D3E0",
+    "To Account": "8006757B0",
+    "Amount Received": "1248.38",
+    "Receiving Currency": "EUR",
+    "Converted USD": "1413.553756440016"
+  },
+  {
+    "Timestamp": "2022/09/01 22:27",
+    "From Bank": "1502",
+    "From Account": "80053D3E0",
+    "To Account": "8006757B0",
+    "Amount Received": "379.06",
+    "Receiving Currency": "EUR",
+    "Converted USD": "429.213610371964"
+  },
+  {
+    "Timestamp": "2022/09/01 22:14",
+    "From Bank": "1502",
+    "From Account": "80053D3E0",
+    "To Account": "8006757B0",
+    "Amount Received": "143.38",
+    "Receiving Currency": "EUR",
+    "Converted USD": "162.3506765555115"
+  },
+  {
+    "Timestamp": "2022/09/01 22:09",
+    "From Bank": "1502",
+    "From Account": "80053D3E0",
+    "To Account": "8006757B0",
+    "Amount Received": "201.49",
+    "Receiving Currency": "EUR",
+    "Converted USD": "228.14923852120253"
+  },
+  {
+    "Timestamp": "2022/09/02 02:12",
+    "From Bank": "2591",
+    "From Account": "80043FDB0",
+    "To Account": "8006757B0",
+    "Amount Received": "1397.92",
+    "Receiving Currency": "EUR",
+    "Converted USD": "1582.8794655494537"
+  },
+  {
+    "Timestamp": "2022/09/02 02:24",
+    "From Bank": "2591",
+    "From Account": "80043FDB0",
+    "To Account": "8006757B0",
+    "Amount Received": "2915.59",
+    "Receiving Currency": "EUR",
+    "Converted USD": "3301.353111023043"
+  },
+  {
+    "Timestamp": "2022/09/02 20:34",
+    "From Bank": "1502",
+    "From Account": "80053D3E0",
+    "To Account": "8006757B0",
+    "Amount Received": "1248.38",
+    "Receiving Currency": "EUR",
+    "Converted USD": "1413.553756440016"
+  },
+  {
+    "Timestamp": "2022/09/02 20:51",
+    "From Bank": "1502",
+    "From Account": "80053D3E0",
+    "To Account": "8006757B0",
+    "Amount Received": "379.06",
+    "Receiving Currency": "EUR",
+    "Converted USD": "429.213610371964"
+  },
+  {
+    "Timestamp": "2022/09/02 20:47",
+    "From Bank": "1502",
+    "From Account": "80053D3E0",
+    "To Account": "8006757B0",
+    "Amount Received": "143.38",
+    "Receiving Currency": "EUR",
+    "Converted USD": "162.3506765555115"
+  },
+  {
+    "Timestamp": "2022/09/02 20:58",
+    "From Bank": "1502",
+    "From Account": "80053D3E0",
+    "To Account": "8006757B0",
+    "Amount Received": "201.49",
+    "Receiving Currency": "EUR",
+    "Converted USD": "228.14923852120253"
+  },
+  {
+    "Timestamp": "2022/09/05 00:35",
+    "From Bank": "1502",
+    "From Account": "80053D3E0",
+    "To Account": "8006757B0",
+    "Amount Received": "1248.38",
+    "Receiving Currency": "EUR",
+    "Converted USD": "1413.553756440016"
+  },
+  {
+    "Timestamp": "2022/09/05 00:54",
+    "From Bank": "1502",
+    "From Account": "80053D3E0",
+    "To Account": "8006757B0",
+    "Amount Received": "379.06",
+    "Receiving Currency": "EUR",
+    "Converted USD": "429.213610371964"
+  },
+  {
+    "Timestamp": "2022/09/05 00:32",
+    "From Bank": "1502",
+    "From Account": "80053D3E0",
+    "To Account": "8006757B0",
+    "Amount Received": "143.38",
+    "Receiving Currency": "EUR",
+    "Converted USD": "162.3506765555115"
+  },
+  {
+    "Timestamp": "2022/09/05 00:30",
+    "From Bank": "1502",
+    "From Account": "80053D3E0",
+    "To Account": "8006757B0",
+    "Amount Received": "201.49",
+    "Receiving Currency": "EUR",
+    "Converted USD": "228.14923852120253"
+  },
+  {
+    "Timestamp": "2022/09/06 11:09",
+    "From Bank": "1502",
+    "From Account": "80053D3E0",
+    "To Account": "8006757B0",
+    "Amount Received": "1248.38",
+    "Receiving Currency": "EUR",
+    "Converted USD": "1413.553756440016"
+  },
+  {
+    "Timestamp": "2022/09/06 11:03",
+    "From Bank": "1502",
+    "From Account": "80053D3E0",
+    "To Account": "8006757B0",
+    "Amount Received": "379.06",
+    "Receiving Currency": "EUR",
+    "Converted USD": "429.213610371964"
+  },
+  {
+    "Timestamp": "2022/09/06 11:18",
+    "From Bank": "1502",
+    "From Account": "80053D3E0",
+    "To Account": "8006757B0",
+    "Amount Received": "143.38",
+    "Receiving Currency": "EUR",
+    "Converted USD": "162.3506765555115"
+  },
+  {
+    "Timestamp": "2022/09/06 11:07",
+    "From Bank": "1502",
+    "From Account": "80053D3E0",
+    "To Account": "8006757B0",
+    "Amount Received": "201.49",
+    "Receiving Currency": "EUR",
+    "Converted USD": "228.14923852120253"
+  },
+  {
+    "Timestamp": "2022/09/07 05:05",
+    "From Bank": "1502",
+    "From Account": "80053D3E0",
+    "To Account": "8006757B0",
+    "Amount Received": "1248.38",
+    "Receiving Currency": "EUR",
+    "Converted USD": "1413.553756440016"
+  },
+  {
+    "Timestamp": "2022/09/07 05:28",
+    "From Bank": "1502",
+    "From Account": "80053D3E0",
+    "To Account": "8006757B0",
+    "Amount Received": "379.06",
+    "Receiving Currency": "EUR",
+    "Converted USD": "429.213610371964"
+  },
+  {
+    "Timestamp": "2022/09/07 05:03",
+    "From Bank": "1502",
+    "From Account": "80053D3E0",
+    "To Account": "8006757B0",
+    "Amount Received": "143.38",
+    "Receiving Currency": "EUR",
+    "Converted USD": "162.3506765555115"
+  },
+  {
+    "Timestamp": "2022/09/07 05:23",
+    "From Bank": "1502",
+    "From Account": "80053D3E0",
+    "To Account": "8006757B0",
+    "Amount Received": "201.49",
+    "Receiving Currency": "EUR",
+    "Converted USD": "228.14923852120253"
+  },
+  {
+    "Timestamp": "2022/09/08 11:22",
+    "From Bank": "1502",
+    "From Account": "80053D3E0",
+    "To Account": "8006757B0",
+    "Amount Received": "1248.38",
+    "Receiving Currency": "EUR",
+    "Converted USD": "1413.553756440016"
+  },
+  {
+    "Timestamp": "2022/09/08 11:26",
+    "From Bank": "1502",
+    "From Account": "80053D3E0",
+    "To Account": "8006757B0",
+    "Amount Received": "379.06",
+    "Receiving Currency": "EUR",
+    "Converted USD": "429.213610371964"
+  },
+  {
+    "Timestamp": "2022/09/08 11:21",
+    "From Bank": "1502",
+    "From Account": "80053D3E0",
+    "To Account": "8006757B0",
+    "Amount Received": "143.38",
+    "Receiving Currency": "EUR",
+    "Converted USD": "162.3506765555115"
+  },
+  {
+    "Timestamp": "2022/09/08 11:16",
+    "From Bank": "1502",
+    "From Account": "80053D3E0",
+    "To Account": "8006757B0",
+    "Amount Received": "201.49",
+    "Receiving Currency": "EUR",
+    "Converted USD": "228.14923852120253"
+  },
+  {
+    "Timestamp": "2022/09/09 05:46",
+    "From Bank": "2591",
+    "From Account": "80043FDB0",
+    "To Account": "8006757B0",
+    "Amount Received": "1397.92",
+    "Receiving Currency": "EUR",
+    "Converted USD": "1582.8794655494537"
+  },
+  {
+    "Timestamp": "2022/09/09 05:44",
+    "From Bank": "2591",
+    "From Account": "80043FDB0",
+    "To Account": "8006757B0",
+    "Amount Received": "2915.59",
+    "Receiving Currency": "EUR",
+    "Converted USD": "3301.353111023043"
+  },
+  {
+    "Timestamp": "2022/09/09 20:09",
+    "From Bank": "1502",
+    "From Account": "80053D3E0",
+    "To Account": "8006757B0",
+    "Amount Received": "1248.38",
+    "Receiving Currency": "EUR",
+    "Converted USD": "1413.553756440016"
+  },
+  {
+    "Timestamp": "2022/09/09 20:28",
+    "From Bank": "1502",
+    "From Account": "80053D3E0",
+    "To Account": "8006757B0",
+    "Amount Received": "379.06",
+    "Receiving Currency": "EUR",
+    "Converted USD": "429.213610371964"
+  },
+  {
+    "Timestamp": "2022/09/09 20:28",
+    "From Bank": "1502",
+    "From Account": "80053D3E0",
+    "To Account": "8006757B0",
+    "Amount Received": "143.38",
+    "Receiving Currency": "EUR",
+    "Converted USD": "162.3506765555115"
+  },
+  {
+    "Timestamp": "2022/09/09 20:26",
+    "From Bank": "1502",
+    "From Account": "80053D3E0",
+    "To Account": "8006757B0",
+    "Amount Received": "201.49",
+    "Receiving Currency": "EUR",
+    "Converted USD": "228.14923852120253"
+  },
+  {
+    "Timestamp": "2022/09/10 10:51",
+    "From Bank": "29089",
+    "From Account": "80A06E7F0",
+    "To Account": "8006757B0",
+    "Amount Received": "1018.98",
+    "Receiving Currency": "EUR",
+    "Converted USD": "1153.8017324350337"
+  },
+  {
+    "Timestamp": "2022/09/10 16:45",
+    "From Bank": "13037",
+    "From Account": "80604A560",
+    "To Account": "8006757B0",
+    "Amount Received": "333.07",
+    "Receiving Currency": "EUR",
+    "Converted USD": "377.1386514182189"
+  },
+  {
+    "Timestamp": "2022/09/11 13:34",
+    "From Bank": "112637",
+    "From Account": "804D02430",
+    "To Account": "8006757B0",
+    "Amount Received": "13195.17",
+    "Receiving Currency": "EUR",
+    "Converted USD": "14941.029270225896"
+  },
+  {
+    "Timestamp": "2022/09/12 14:54",
+    "From Bank": "11157",
+    "From Account": "80108E830",
+    "To Account": "8006757B0",
+    "Amount Received": "12682.48",
+    "Receiving Currency": "EUR",
+    "Converted USD": "14360.505010473871"
+  },
+  {
+    "Timestamp": "2022/09/13 13:23",
+    "From Bank": "23833",
+    "From Account": "80197C0D0",
+    "To Account": "8006757B0",
+    "Amount Received": "7112.28",
+    "Receiving Currency": "EUR",
+    "Converted USD": "8053.309177376436"
+  },
+  {
+    "Timestamp": "2022/09/14 03:02",
+    "From Bank": "111433",
+    "From Account": "80649BBB0",
+    "To Account": "8006757B0",
+    "Amount Received": "8647.96",
+    "Receiving Currency": "EUR",
+    "Converted USD": "9792.175734586423"
+  }
+]

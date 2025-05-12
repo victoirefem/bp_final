@@ -17,8 +17,8 @@ After the confirmation for updating the risk score, the whole session pipeline, 
 
 ## Install dependencies
 
-1. pip install -r requirements.txt
-2. npm install
+1. `pip install -r requirements.txt`
+2. `npm install`
 
 
 
@@ -42,7 +42,7 @@ python3 main.py
 ## Cases for testing
 
 
-For each case we also define which banks data files need to be in `bank_data/raw`. If some are missing in the directory, download them from OneDrive folder with the respective case.
+For each case we also define which banks data files need to be in `bank_data/raw`.
 
 
 ### Case1: 6 invited banks

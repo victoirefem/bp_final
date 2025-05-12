@@ -1,0 +1,14 @@
+[
+  {
+    "hash": "0x287901207618ad65533429205fe3ca9fb02303cdf36cf77a9bbc8233a29b45bf",
+    "original": {
+      "Timestamp": "2022/09/04 15:51",
+      "fromBank": "28628",
+      "fromAccount": "80ACEE280",
+      "toAccount": "8013C4030",
+      "amount": "7945.55",
+      "currency": "USD",
+      "usd": "7945.55"
+    }
+  }
+]

@@ -1,7 +1,6 @@
 .vscode/
 
 # blockchain
-blockchain/artifacts/
 blockchain/lib/
 blockchain/foundry.toml
 blockchain/.gitmodules
@@ -9,25 +8,9 @@ blockchain/.github/workflows/
 blockchain/.gitignore
 
 
-# Banks private data
-bank_data/raw/
-bank_data/hash-to-record/
-bank_data/hash-to-record/proofs/
+# Backend ptau
+backend/zk/zk-circuits/ptau
 
-# Backend - pdata
-backend/pdata/incomes/
-backend/pdata/risks/
-
-# Backend - zk-inputs + pot + builds
-backend/zk/zk-circuits/
-backend/zk/zk-inputs/
-
-backend/pdata/incomes
-backend/pdata/risks
-
-# MPC inputs/results
-MP-SPDZ/mpc-results/
-MP-SPDZ/Player-Data/
 
 # libraries
 node_modules/

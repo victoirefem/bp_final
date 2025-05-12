@@ -1,0 +1,56 @@
+[
+  {
+    "Timestamp": "2022/09/01 00:03",
+    "From Bank": "1467",
+    "From Account": "8013C4030",
+    "To Account": "80BC62F10",
+    "Amount Received": "58702.1",
+    "Receiving Currency": "CNY",
+    "Converted USD": "8073.067587174321"
+  },
+  {
+    "Timestamp": "2022/09/02 00:27",
+    "From Bank": "9571",
+    "From Account": "80BC614F0",
+    "To Account": "80BC62F10",
+    "Amount Received": "21085.97",
+    "Receiving Currency": "CNY",
+    "Converted USD": "2899.8700378884255"
+  },
+  {
+    "Timestamp": "2022/09/02 00:16",
+    "From Bank": "21615",
+    "From Account": "80BC61C70",
+    "To Account": "80BC62F10",
+    "Amount Received": "19572.24",
+    "Receiving Currency": "CNY",
+    "Converted USD": "2691.6927393125075"
+  },
+  {
+    "Timestamp": "2022/09/02 00:14",
+    "From Bank": "224782",
+    "From Account": "80BC62E20",
+    "To Account": "80BC62F10",
+    "Amount Received": "7971.49",
+    "Receiving Currency": "CNY",
+    "Converted USD": "1096.2874844423663"
+  },
+  {
+    "Timestamp": "2022/09/02 00:08",
+    "From Bank": "14",
+    "From Account": "80BC61040",
+    "To Account": "80BC62F10",
+    "Amount Received": "4225.52",
+    "Receiving Currency": "CNY",
+    "Converted USD": "581.119049419984"
+  },
+  {
+    "Timestamp": "2022/09/02 00:18",
+    "From Bank": "18475",
+    "From Account": "80BC62D30",
+    "To Account": "80BC62F10",
+    "Amount Received": "8068.36",
+    "Receiving Currency": "CNY",
+    "Converted USD": "1109.6096323241213"
+  }
+]

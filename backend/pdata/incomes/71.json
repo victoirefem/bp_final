@@ -1,0 +1,29 @@
+[
+  {
+    "Timestamp": "2022/09/03 10:20",
+    "From Bank": "24856",
+    "From Account": "8090E8EB0",
+    "To Account": "804ABCE90",
+    "Amount Received": "637140.6",
+    "Receiving Currency": "INR",
+    "Converted USD": "7530.233657562255"
+  },
+  {
+    "Timestamp": "2022/09/02 23:58",
+    "From Bank": "312283",
+    "From Account": "804AE39E0",
+    "To Account": "804ABCE90",
+    "Amount Received": "22286.28",
+    "Receiving Currency": "INR",
+    "Converted USD": "263.3969578423609"
+  },
+  {
+    "Timestamp": "2022/09/09 12:12",
+    "From Bank": "312283",
+    "From Account": "804AE39E0",
+    "To Account": "804ABCE90",
+    "Amount Received": "22286.28",
+    "Receiving Currency": "INR",
+    "Converted USD": "263.3969578423609"
+  }
+]
