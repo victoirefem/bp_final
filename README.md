@@ -9,22 +9,41 @@ After the confirmation for updating the risk score, the whole session pipeline, 
 1. Python 3.10.12
 2. Node.js v20.12.0 and npm v10.5.0
 3. npx is available
-4. Working directory - the root of the project
-
-## Before start
-
-
+4. Foundry installed (instructions at https://book.getfoundry.sh/getting-started/installation)
+5. Ubuntu 22.04
+6. Working directory - the root of the project
 
 
 
-## Start
+## Install dependencies
 
+1. pip install -r requirements.txt
+2. npm install
+
+
+
+
+
+## Run the program
+
+1. Open terminal and start anvil, which is the local Ethereum node
+```bash
+anvil
+```
+
+2. In another terminal run:
 ```python
 python3 main.py
 ```
 
+3. Enter bank Id and client Id
+
 
 ## Cases for testing
+
+
+For each case we also define which banks data files need to be in `bank_data/raw`. If some are missing in the directory, download them from OneDrive folder with the respective case.
+
 
 ### Case1: 6 invited banks
 
@@ -48,7 +67,7 @@ Client Id: 80BC62F10
 ### Case2: 2 invited banks
 
 ```python
-Init bank Id: 148
+Init bank Id: 71
 Client Id: 804ABCE90
 
 ### Files needed in bank_data/raw
@@ -113,16 +132,7 @@ Client Id: 8006757B0
 29089_risks.csv
 ```
 
+## Included Dependencies
 
-
-## Anvil
-
-Instructions at: [Anvil](https://medium.com/@maria.magdalena.makeup/foundry-anvil-a-local-ethereum-node-for-development-642ca28f7892)
-
-
-
-
-
-## MP-SPDZ
-
-Instructions at: [circom-mp-spdz](https://hackmd.io/Iuu9yge4ShKBjawAcmFjvw?view) (2: Run parties in different machines)
+- [MP-SPDZ](https://github.com/data61/MP-SPDZ)
+- [circom-2-arithhc](https://github.com/arnaucube/circom-2-arithhc)
