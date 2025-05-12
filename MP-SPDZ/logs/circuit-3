@@ -1,0 +1,9 @@
+Using statistical security parameter 40
+Significant amount of unused triples of gfp distorting the benchmark. For more accurate benchmarks, consider reducing the batch size with --batch-size.
+The following benchmarks are including preprocessing (offline phase).
+Time = 0.28229 seconds 
+Data sent = 24.5123 MB in ~101 rounds (party 3 only; use '-v' for more details)
+Global data sent = 98.1994 MB (all parties)
+This program might benefit from some protocol options.
+Consider adding the following at the beginning of your code:
+	program.use_edabit(True)
