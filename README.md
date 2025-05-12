@@ -17,9 +17,46 @@ After the confirmation for updating the risk score, the whole session pipeline, 
 
 ## Install dependencies
 
-1. `pip install -r requirements.txt`
-2. `npm install`
 
+```bash
+pip install -r requirements.txt
+npm install
+````
+
+### Build circom-2-arithc
+```bash
+install cargo
+cd ./circom-2-arithc
+cargo build --release
+```
+
+### Circom
+```bash
+cd ..
+wget https://github.com/iden3/circom/releases/download/v2.1.8/circom-linux-amd64
+unzip ./circom-2.1.8.zip
+cd ./circom-2.1.8
+cargo build --release
+cargo install --path circom
+```
+
+### SnarkJs
+```bash
+npm install -g snarkjs
+```
+
+### Build Mpc VM for `semi` protocol
+```bash
+cd ./MP-SPDZ
+make -j8 semi-party.x
+ls semi-party.x
+```
+
+### Move your .ptau file
+
+```bash
+mv pot10.ptau ./backend/zk/zk-circuits/ptau
+```
 
 
 
